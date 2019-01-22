@@ -59,7 +59,7 @@
 
 	<form action="/exibirCaixa/{inputCaixaDate}">
 	Selecione uma data para exibir o caixa
-	<input type="date" onclick="" name="inputCaixaDate">
+	<input type="date" onclick="" requi name="inputCaixaDate" required>
 	<input type="submit">
 	</form>
 	

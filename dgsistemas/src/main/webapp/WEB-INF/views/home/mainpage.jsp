@@ -37,6 +37,11 @@
 
 <body>
 
+<input type="hidden" class="form-control" type="text" name="inputHiddenFuncionarioID" value="${funcionarioid}">
+			
+			<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+
 
 	<div class="navbar navbar-default navbar-static-top">
 		<div class="container">
@@ -84,7 +89,7 @@
 							<tr>
 							<td colspan="4"><div>
 									<a class="btn btn-default btn-block"
-										href="/abrirconta" target="_self">Abrir
+										href="/abrirconta" target="_self">Abrir Nova
 										Conta</a>
 								</div></td>
 								</tr>
@@ -113,7 +118,5 @@
 			DG Sistemas<br>26.432.405/0001-92<br>+55(81)99939-3017
 		</p>
 	</div>
-
-
 </body>
 </html>

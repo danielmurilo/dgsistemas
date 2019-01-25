@@ -28,6 +28,8 @@ public class Funcionario implements Serializable {
 	private Date aniversario;
 	private Date dataAdmissao;
 	private int admin;
+	private String role;
+	private int status;
 	
 	
 	public int getId() {
@@ -77,6 +79,18 @@ public class Funcionario implements Serializable {
 	}
 	public void setDataAdmissao(Date dataAdmissao) {
 		this.dataAdmissao = dataAdmissao;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	public int getAdmin() {
 		return admin;

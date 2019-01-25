@@ -24,6 +24,7 @@ public class Categoria implements Serializable {
 	private long id;
 	private String nome;
 	private int status;
+	private int cobraEmbalagem;
 	
 	
 	
@@ -44,6 +45,12 @@ public class Categoria implements Serializable {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public int getCobraEmbalagem() {
+		return cobraEmbalagem;
+	}
+	public void setCobraEmbalagem(int cobraEmbalagem) {
+		this.cobraEmbalagem = cobraEmbalagem;
 	}
 	
 	

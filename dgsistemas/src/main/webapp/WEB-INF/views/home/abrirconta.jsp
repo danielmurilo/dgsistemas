@@ -34,6 +34,9 @@
 
 <body>
 
+<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+
 	<div class="navbar navbar-default navbar-static-top">
 		<div class="container">
 			<div class="navbar-header">

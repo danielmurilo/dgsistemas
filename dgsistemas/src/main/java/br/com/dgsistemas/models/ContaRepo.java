@@ -31,5 +31,9 @@ public interface ContaRepo extends CrudRepository<Conta, Long>{
 	@Query(value = "SELECT c.id_conta, c.data_abertura, LEFT(c.nome_mesa, 10) AS nome_mesa, c.status, c.funcionario_id, c.id_conta, (SELECT COALESCE(SUM(p.valor_venda*p.qtd), 0.00) FROM pedido p WHERE p.conta_id = c.id_conta) as total FROM conta c WHERE DATE(c.data_abertura) = :data", 
 			  nativeQuery = true)
 	public List<Conta> listarContasComTotalPorData(@Param("data") Date data);
+	
+	@Query(value = "SELECT c.id_conta, c.data_abertura, LEFT(c.nome_mesa, 10) AS nome_mesa, c.status, c.funcionario_id, c.id_conta, (SELECT COALESCE(SUM(p.valor_venda*p.qtd), 0.00) FROM pedido p WHERE p.conta_id = c.id_conta) as total FROM conta c WHERE DATE(c.data_abertura) = :data AND c.funcionario_id = :idFuncionario", 
+			  nativeQuery = true)
+	public List<Conta> listarContasComTotalPorDataAndFuncionario(@Param("data") Date data, @Param("idFuncionario") int idFuncionario);
 
 }

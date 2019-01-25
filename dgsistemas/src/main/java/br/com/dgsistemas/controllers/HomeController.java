@@ -1,6 +1,7 @@
 package br.com.dgsistemas.controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -214,7 +215,6 @@ public class HomeController
 	   p.setConta(contaRepo.findOne(contaid));
 	   p.setFuncionario(funcionarioRepo.findOne(f_id));	   
 	   pedidoRepo.save(p);
-	   System.out.println(valor);
 	   return "/conta/"+contaid;
    }
    
@@ -233,7 +233,6 @@ public class HomeController
 	   p.setConta(contaRepo.findOne(contaid));
 	   p.setFuncionario(funcionarioRepo.findOne(f_id));	   
 	   pedidoRepo.save(p);
-	   System.out.println(valor);
 	   return "/conta/"+contaid;
 	   }
    
@@ -241,18 +240,13 @@ public class HomeController
    @RequestMapping(value = "/listarProdutosPorCategoria/{id}")
 	public void listarProdutosPorCategoria(@PathVariable("id") Long id, HttpServletResponse response) {
 	   
-	   Map<Long, String> options = new LinkedHashMap<>();
 	   List<Produto> produtos = (List<Produto>) produtoRepo.listarProdutosPorCategoria(id);
-	   for (int i = 0; i < produtos.size(); i++){
-		   options.put(produtos.get(i).getId(), produtos.get(i).getNome()+" R$ "+produtos.get(i).getPreco());
-	   }
-	    String json = new Gson().toJson(options);
+	    String json = new Gson().toJson(produtos);
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    try {
 			response.getWriter().write(json);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -267,27 +261,37 @@ public class HomeController
    }
    
    @RequestMapping(value = "/caixa")
-   public String caixa() {	   	  
-		  return "home/caixa";
+   public ModelAndView caixa() {
+	   ModelAndView mv = new ModelAndView("home/caixa");
+	   mv.addObject("funcionarios", funcionarioRepo.listarFuncionariosAtivos());   
+	   return mv;
 	  }
    
    
-   @RequestMapping(value = "/exibirCaixa/{inputCaixaDate}")
-   public ModelAndView exibirCaixa(@RequestParam("inputCaixaDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date date) {
+   @RequestMapping(value = "/exibirCaixa/{idFuncionario}/{inputCaixaDate}")
+   public ModelAndView exibirCaixa(@RequestParam("inputCaixaDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date date, @PathVariable("idFuncionario") String idFuncionario) {
+	   System.out.println(date + " idFuncionario:" + idFuncionario);
 	   ModelAndView mv = new ModelAndView("home/caixa");
+	   List<Conta> contas;
+	   if(Integer.parseInt(idFuncionario) > 0) {
+		   contas = (List<Conta>)contaRepo.listarContasComTotalPorDataAndFuncionario(date, Integer.parseInt(idFuncionario));
+		   mv.addObject("valortotalemdinheiro", pedidoRepo.valorTotalVendasEmDinheiroPorDataAndFuncionario(date, Integer.parseInt(idFuncionario)));		   
+		   mv.addObject("valortotalemcartao", pedidoRepo.valorTotalVendasEmCartaoPorDataAndFuncionario(date, Integer.parseInt(idFuncionario)));	   
+	   }else {
+		   contas = (List<Conta>)contaRepo.listarContasComTotalPorData(date);
+		   mv.addObject("valortotalemdinheiro", pedidoRepo.valorTotalVendasEmDinheiroPorData(date));
+		   mv.addObject("valortotalemcartao", pedidoRepo.valorTotalVendasEmCartaoPorData(date));	   
+	   }
 	   
-	   List<Conta> contas = (List<Conta>)contaRepo.listarContasComTotalPorData(date);
 	   for (int i = 0; i < contas.size(); i++) {
 		   try {
-			//contas.get(i).setTotal(contaRepo.findTotal(contas.get(i).getId()));
-			//System.out.println(contaRepo.findTotal(contas.get(i).getId()));
 			contas.get(i).setFuncionarioAbertura(funcionarioRepo.findOne(contas.get(i).getFuncionarioAbertura().getId()));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	   }
-	   mv.addObject("valortotalemdinheiro", pedidoRepo.valorTotalVendasEmDinheiroPorData(date));
-	   mv.addObject("valortotalemcartao", pedidoRepo.valorTotalVendasEmCartaoPorData(date));	   
+	   mv.addObject("funcionarios", funcionarioRepo.listarFuncionariosAtivos());   
+	  
 	   mv.addObject("contas", contas);	   
 	   return mv;
 	   
@@ -295,6 +299,27 @@ public class HomeController
    @RequestMapping(value = "/admin")
    public String admin() {	   
 	   return "/home/admin";
+   }
+   
+   @RequestMapping(value = "/cobraEmbalagem/{idProduto}")
+   public void cobraEmbalagem(@PathVariable("idProduto") Long idProduto, HttpServletResponse response) {
+	   try {
+		   response.setContentType("text/html");
+		   PrintWriter out = response.getWriter();
+		   out.append(categoriaRepo.cobraEmbalagem(idProduto));
+		   out.close();
+	} catch (Exception e) {	}	   
+	   
+   }
+   @RequestMapping(value = "/getIdTaxaEmbalagem")
+   public void getIdTaxaEmbalagem(HttpServletResponse response) {
+	   try {
+		   response.setContentType("text/html");
+		   PrintWriter out = response.getWriter();
+		   out.append(categoriaRepo.getIdTaxaEmbalagem());
+		   out.close();
+	} catch (Exception e) {	}		   
+	   
    }
    
 

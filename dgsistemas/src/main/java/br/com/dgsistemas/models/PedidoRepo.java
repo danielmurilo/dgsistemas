@@ -24,6 +24,14 @@ public interface PedidoRepo extends CrudRepository<Pedido, Long> {
 			  nativeQuery = true)
 	public Double valorTotalVendasEmCartaoPorData(@Param("date") Date date);
 	
+	@Query(value = "SELECT COALESCE(SUM(p.valor_venda),0.00) AS  totalDinheiro  FROM pedido p WHERE p.produto_id = 1 AND DATE(p.data) = :date AND p.funcionario_id = :id", 
+			  nativeQuery = true)
+	public Double valorTotalVendasEmDinheiroPorDataAndFuncionario(@Param("date") Date date, @Param("id") int idFuncionario);
+	
+	@Query(value = "SELECT COALESCE(SUM(p.valor_venda),0.00) AS  totalCartao  FROM pedido p WHERE p.produto_id = 2 AND DATE(p.data) = :date AND p.funcionario_id = :id", 
+			  nativeQuery = true)
+	public Double valorTotalVendasEmCartaoPorDataAndFuncionario(@Param("date") Date date, @Param("id") int idFuncionario);
+	
 	
 
 }

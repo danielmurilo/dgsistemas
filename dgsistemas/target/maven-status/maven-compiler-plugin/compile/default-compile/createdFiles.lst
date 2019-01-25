@@ -1,0 +1,15 @@
+br\com\dgsistemas\models\Funcionario.class
+br\com\dgsistemas\Boot.class
+br\com\dgsistemas\models\Conta.class
+br\com\dgsistemas\models\Pedido.class
+br\com\dgsistemas\models\IngredienteRepo.class
+br\com\dgsistemas\models\FuncionarioRepo.class
+br\com\dgsistemas\controllers\HomeController.class
+br\com\dgsistemas\models\Produto.class
+br\com\dgsistemas\models\PedidoRepo.class
+br\com\dgsistemas\models\ProdutoRepo.class
+br\com\dgsistemas\models\Categoria.class
+br\com\dgsistemas\models\CategoriaRepo.class
+br\com\dgsistemas\models\Ingrediente.class
+br\com\dgsistemas\models\PedidoSerializado.class
+br\com\dgsistemas\models\ContaRepo.class

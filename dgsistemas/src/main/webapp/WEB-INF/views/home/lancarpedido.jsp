@@ -60,6 +60,9 @@
 
 <body>
 
+<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+
 	<div class="navbar navbar-default navbar-static-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -208,7 +211,7 @@
 
 
 	<script type="text/javascript">
-
+	
 	var globalIdProduto;
 	var globalNomeProduto;
 	var globalListaPedidos = [];
@@ -218,19 +221,18 @@
 
         $.get("/listarProdutosPorCategoria/"+id, function(json) {  
 			$("#dropDownProdutos").empty();
-			$.each(json, function(i, nomeproduto) {
-			    $("#dropDownProdutos").append('<li><a value="'+i+'" onclick="selecionarProduto('+i+', \''+nomeproduto+'\')"> '+nomeproduto+'</a></li>');
+			$.each(json, function(id, produto) {
+			    $("#dropDownProdutos").append('<li><a onclick="selecionarProduto('+produto.id+', \'' +produto.nome+' R$ '+produto.preco+'\', \''+produto.nome+'\')"> '+produto.nome+' R$ '+produto.preco+'</a></li>');
 			    $("#dropDownProdutos").append('<li class="divider"></li>');
-			    
 			});
 		});  
 	}
 
 
-	function selecionarProduto(id, nomeProduto){
-		document.getElementById('labelProduto').innerHTML = nomeProduto;
+	function selecionarProduto(id, nomePreco, nome){
 		globalIdProduto = id;
-		globalNomeProduto = nomeProduto;
+		globalNomeProduto = nome;
+		document.getElementById('labelProduto').innerHTML = nomePreco;
 		$("#btnAdcionar").attr("onclick","adcionar()");
 		$("#btnLancarTodos").attr("onclick","lancarPedidos()");
 		}
@@ -260,9 +262,27 @@
 				obsadd = obsadd + "Sem Molho,<br> "};
 			if (document.getElementById("paraviagem").checked == true) {
 				obsadd = obsadd + "*PARA VIAGEM!!!* "};
+
+				var qtdInput = document.getElementById('qtd').value
+
 							
-			var pedido = {id:globalIdProduto, nome:globalNomeProduto, qtd:document.getElementById('qtd').value, obs:obsadd};
+			var pedido = {id:globalIdProduto, nome:globalNomeProduto, qtd:qtdInput, obs:obsadd};
 			globalListaPedidos.push(pedido);
+
+			if(document.getElementById("paraviagem").checked == true){
+
+				$.get("/cobraEmbalagem/"+globalIdProduto, function(cobraEmbalagem) {  
+					
+					if(cobraEmbalagem === '1'){
+							$.get("getIdTaxaEmbalagem", function(idEmbalagem){
+								var embalagem = {id:idEmbalagem, nome:'Embalagem', qtd:qtdInput, obs:''};
+								globalListaPedidos.push(embalagem);
+								popularTabela();
+								});
+
+						}
+				});  
+			}
 			limparCampos();
 			popularTabela();		
 			

@@ -1,3 +1,5 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.If"%>
+<%@page import="javax.servlet.jsp.tagext.TryCatchFinally"%>
 <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -57,24 +59,46 @@
 	</div>
 
 
-	<form action="/exibirCaixa/{inputCaixaDate}">
-	Selecione uma data para exibir o caixa
-	<input type="date" onclick="" requi name="inputCaixaDate" required>
-	<input type="submit">
-	</form>
+	<table  style="width: 100%"  border="0">
+      <tbody>
+        <tr>
+	        <td>Selecione uma data:</td>
+	        <td>Funcionario:</td>
+        </tr>
+        <tr>
+          <td><form action="/exibirCaixa/0/inputCaixaDate/" id="formCaixa">	
+				<input type="date" name="inputCaixaDate" required>
+				<input type="submit">
+				</form>
+          </td>
+
+          <td>
+      			<div class="dropdown">
+					<button class="btn btn-primary dropdown-toggle" type="button" id="buttonDropDown"
+						data-toggle="dropdown" value="Todos"> Todos	</button>
+					<ul class="dropdown-menu">
+							<li><a onclick="setarFuncionario(0, Todos)" value="Todos">Todos</a></li>
+							<li class="divider"></li>
+						<c:forEach var="funcionario" items="${funcionarios}" varStatus="loop">
+							<li><a value="${funcionario.login}" onclick="setarFuncionario(${funcionario.id}, '${funcionario.login}')">${funcionario.login}</a></li>
+							<li class="divider"></li>
+						</c:forEach>
+					</ul>
+				</div>
+          </td>
+		</tr>
+      </tbody>
+    </table>
+	
 	
 	<table class="table table-striped">
   <thead>
-  <tr><td>Totais:</td>
+  <tr><td colspan="3">Recebimentos:</td>
   </tr>
-			<%--     <tr>
-		    <fmt:setLocale value = "pt-BR"/>
-		    <th>Dinheiro: <c:set var ="totaldin" value="${valortotalemdinheiro}"><fmt:formatNumber value = "totaldin" type ="currency" currencySymbol="R$"/></c:set></th>
-		    <th>Cartão: <c:set var="totalcartao" value="${valortotalemcartao}"><fmt:formatNumber value = "totalcartao" type ="currency" currencySymbol="R$"/></c:set></th>
-		    </tr> --%>
-    <tr>
-    <td>Dinheiro: ${valortotalemdinheiro}</td>
-    <td>Cartão: ${valortotalemcartao}</td>
+    <tr>			
+	<td>Dinheiro: <br>R$ ${valortotalemdinheiro * -1}</td>			
+    <td>Cartão: <br>R$ ${valortotalemcartao * -1}</td>
+    <td>Total: <br>${(valortotalemdinheiro + valortotalemcartao)*-1}</td>
     </tr>
   </thead>
   
@@ -127,7 +151,16 @@
 		<p>DG Sistemas<br>26.432.405/0001-92<br>+55(81)99939-3017</p>
 	</div>
 	
+	<script type="text/javascript">
 	
+		function setarFuncionario(id, login){
+			$("#buttonDropDown").val(login);
+			$('#formCaixa').attr('action', '/exibirCaixa/'+id+'/{inputCaixaDate}');
+				
+			}
+
+
+	</script>
 	
 </body>
 </html>

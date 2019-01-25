@@ -39,6 +39,9 @@
 
 <body>
 
+<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+
 	<div class="navbar navbar-default navbar-static-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -113,8 +116,8 @@
 </style>
 	<div class="footer">
 	<div id="divfecharconta">
-		<a class="btn btn-default btn-secondary" onclick="dinheiro()"	target="_self">Dinheiro</a>
-		<input type="number" id="inputvalorconta" value="${conta.total}">
+		<a class="btn btn-default btn-secondary" onclick="dinheiro(${conta.total})"	target="_self">Dinheiro</a>
+		<input type="number" id="inputvalorconta" value="0.00">
 		<a class="btn btn-default btn-secondary" onclick="cartao()"	target="_self">Cartão</a>
 		<br>
 		<br>
@@ -135,12 +138,21 @@
 	
 	<script type="text/javascript">
 
-	function dinheiro(){
-		var r = confirm("Deseja Realmente \n Lançar este Pgto?");				
+	function dinheiro(total){
+		var valorInput = parseFloat($("#inputvalorconta").val());
+		var valor;
+
+		if( valorInput > total){
+			var troco = valorInput - total;
+			alert("Troco de R$ "+ troco);
+			valor = total;
+			}else{
+					valor = valorInput;
+				}	
+		
+		var r = confirm("Deseja Realmente \n Lançar este Pgto?\n Dinheiro R$ "+ valor);				
 		if (r == true) {
-			var valor = parseFloat($("#inputvalorconta").val());
 			$.post( "/lancardinheiro/"+valor.toFixed(2)+0.01);
-			alert('Dinheiro Lancado!')
 			setTimeout(
 					  function() 
 					  {
@@ -156,9 +168,9 @@
 		}		
 
 	function cartao(){
-		var r = confirm("Deseja Realmente \n Lançar este Pgto?");				
+		var valor = parseFloat($("#inputvalorconta").val());
+		var r = confirm("Deseja Realmente \n Lançar este Pgto?\n Cartão R$ "+ valor);				
 		if (r == true) {
-			var valor = parseFloat($("#inputvalorconta").val());
 			$.post( "/lancarcartao/"+valor.toFixed(2)+0.01);
 			alert('Cartao Lancado!')
 			setTimeout(

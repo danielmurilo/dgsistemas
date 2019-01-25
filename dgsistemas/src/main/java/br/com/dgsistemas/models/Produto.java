@@ -103,17 +103,6 @@ public class Produto implements Serializable {
 	public void setIngredientes(Set<Ingrediente> ingredientes) {
 		this.ingredientes = ingredientes;
 	}
-
-	@Override
-	public String toString() {
-		return "Produto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", status="
-				+ status + ", categoria=" + categoria + ", ingredientes=" + ingredientes + "]";
-	}
-
-	
-	
-	
-		
 	
 
 }

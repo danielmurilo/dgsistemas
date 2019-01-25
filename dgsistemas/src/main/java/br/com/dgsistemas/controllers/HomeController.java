@@ -121,7 +121,7 @@ public class HomeController
 	    ModelAndView mv;		
 		mv = new ModelAndView("home/conta");
 		List<Pedido> lists = (List<Pedido>) pedidoRepo.listarPedidosPorConta(id);
-		Conta conta = (Conta) contaRepo.findContaComtotal(id);
+		Conta conta = (Conta) contaRepo.findContaComtotal();
 		conta.setTotal(contaRepo.findTotal(id));
 		mv.addObject("lists", lists);
 		mv.addObject("conta", conta);

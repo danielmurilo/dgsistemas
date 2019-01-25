@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,6 +29,7 @@ public class Conta implements Serializable {
 	private int status;
 	private Double total;
 	private int delivery;
+	private String endereco;
 	
 	@ManyToOne
     @JoinColumn(name = "FUNCIONARIO_ID")
@@ -100,6 +100,14 @@ public class Conta implements Serializable {
 
 	public void setDelivery(int delivery) {
 		this.delivery = delivery;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 	
 	

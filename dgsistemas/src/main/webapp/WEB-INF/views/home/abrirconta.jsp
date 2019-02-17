@@ -1,96 +1,94 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-<!DOCTYPE head PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
 
-<head>
-<style type="text/css">
-.form-inline {
-	padding-top: 1rem;
-}
-</style>
+<jsp:include page="header.jsp"/>
 
-<title>Waiter Express</title>
-<meta charset="utf-8" name="viewport"
-	content="width=device-width, initial-scale=1">
-<script type="text/javascript"
-	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script type="text/javascript"
-	src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<link
-	href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
-	rel="stylesheet" type="text/css">
-<link
-	href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css"
-	rel="stylesheet" type="text/css">
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-	rel="stylesheet" type="text/css">
-</head>
 
-<body>
-
-<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
-			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
-
-	<div class="navbar navbar-default navbar-static-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target="#navbar-ex-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/"><span>Waiter Express</span></a>
+		<form role="form" action="/abrirconta/salvarconta" method="post" id="form1">
+			<div class="form-group">
+				<label class="control-label" for="inputNomeMesa">Nome/Mesa</label>
+				<input class="form-control" id="nome_mesa" type="text"	placeholder="Digite o nome do cliente ou nº da mesa"	required="required" name="nome_mesa">
+				<br>
+				<input type="checkbox" class="form-check-input" id="deliverycheck" name="deliverycheck">
+				<label class="form-check-label" for="deliverycheck">Delivery</label>
+				
+				<div id="endereco" style="display: none;">
+				
+					<label class="control-label" for="telefone">Telefone</label>
+					<input class="form-control" id="telefone" type="tel"	name="telefone">
+					
+					<label class="control-label" for="cep">Cep</label>
+					<input class="form-control" id="cep" type="text" placeholder="(Opcional)" name="cep">
+					
+					<label class="control-label" for="rua">Logradouro</label>
+					<input class="form-control" id="logradouro" type="text"	placeholder="Rua, Av." name="logradouro">
+					
+					<label class="control-label" for="numero">Numero</label>
+					<input class="form-control" id="numero" type="number"	placeholder="" name="numero">
+					
+					<label class="control-label" for="complemento">Complemento</label>
+					<input class="form-control" id="complemento" type="text"	placeholder="Apto:" name="complemento">
+					
+					<label class="control-label" for="referencia">Referência</label>
+					<input class="form-control" id="referencia" type="text"	placeholder="Após o colegio Santos Dumont" name="referencia">
+					
+					<label class="control-label" for="bairro">Bairro</label>
+					<input class="form-control" id="bairro" type="text"	value="Boa Viagem" name="bairro">
+					
+					<label class="control-label" for="cidade">Cidade</label>
+					<input class="form-control" id="cidade" type="text"	value="Recife" name="cidade">
+					
+					<label class="control-label" for="uf">UF</label>
+					<input class="form-control" id="uf" type="text"	value="PE" name="uf">
+				</div>				
 			</div>
-			<div class="collapse navbar-collapse" id="navbar-ex-collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li class=""><a target="_self" href="/admin">Admin</a></li>
-						<li class=""><a target="_self" href="/mainpage">Pagina Principal</a></li>
-						<li><a target="_self" href="/"> Sair</a></li>
-				</ul>
-			</div>
-
-		</div>
+			<button type="submit" target="_self" class="btn btn-default">Salvar</button>
+		</form>
+		
+	</div>
+	</div>
+	</div>
 	</div>
 
+	<footer class="footer">
+		<p class="bg-primary" style="height: 4px; margin-bottom: 2px;"></p>
+	<p style="margin-top: 2px; margin-bottom: 1px">
+		DG Sistemas 26.432.405/0001-92<br> <i class="material-icons" style="font-size:10px; color: #007BFF">phone</i> (81)99939-3017
+	</p>
+	</footer>
+	
+	<script type="text/javascript">
 
+	//funcoes sidenavbar
+	var i = 0;
+	function openNav() {
+		if(i == 0){	i = i + 1; document.getElementById("mySidenav").style.width = "250px";
+			document.getElementById("mySidenav").style.borderRight = "4px solid #007BFF";
+			}else{closeNav();}
 
-	<form role="form" action="/abrirconta/salvarconta" method="get">   
+	}
 
-		<div class="form-group">
-			<label class="control-label" for="inputNomeMesa">Nome/Mesa</label>
-			<input class="form-control" id="nome_mesa" type="text"
-				placeholder="Digite o nome do cliente ou nº da mesa"
-				required="required" name="nome_mesa">
-		</div>
-		<button type="submit" target="_self" class="btn btn-default">Salvar</button>
+	function closeNav() {
+		 i = 0;
+		 document.getElementById("mySidenav").value = '0';
+		 document.getElementById("mySidenav").style.width = "0";
+		 document.getElementById("mySidenav").style.borderRight = "0px solid white";
 
-	</form>
+	}//fim funcoes sidenavbar
 
-	<style>
-.footer {
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	background-color: #F8F8F8;
-	color: Black;
-	text-align: center;
-}
-</style>
-	<div class="footer">
-		<p>
-			DG Sistemas<br>26.432.405/0001-92<br>+55(81)99939-3017
-		</p>
-	</div>
-
-
-
+	$('#deliverycheck').change(function() {
+        if(this.checked) {
+        	$("#endereco").show();
+        	$("#footer").hide();
+        }else{
+        	$("#endereco").hide();
+        	$("#footer").show();
+            }
+    });
+	</script>
 </body>
 </html>

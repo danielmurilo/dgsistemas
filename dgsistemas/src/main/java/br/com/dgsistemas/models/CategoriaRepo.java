@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 
 @Transactional
-public interface CategoriaRepo extends CrudRepository<Categoria, Integer> {
+public interface CategoriaRepo extends CrudRepository<Categoria, Long> {
 
 	@Query(value = "SELECT * FROM categoria c WHERE c.status = 1", 
 			  nativeQuery = true)
@@ -20,9 +20,6 @@ public interface CategoriaRepo extends CrudRepository<Categoria, Integer> {
 			  nativeQuery = true)
 	public CharSequence cobraEmbalagem(@Param("idProduto") Long idProduto);
 	
-	@Query(value = "select p.id_produto from produto p where p.nome like '%mbalagem%'", 
-			  nativeQuery = true)
-	public CharSequence getIdTaxaEmbalagem();
 	
 }
 

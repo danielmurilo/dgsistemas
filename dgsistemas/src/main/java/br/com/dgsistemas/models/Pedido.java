@@ -31,13 +31,13 @@ public class Pedido implements Serializable {
 	private Date data;
 	private int status;	
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
     @JoinColumn(name = "FUNCIONARIO_ID")
 	private Funcionario funcionario = new Funcionario();
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
     @JoinColumn(name = "CONTA_ID")
 	private Conta conta = new Conta();
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
     @JoinColumn(name = "PRODUTO_ID")
 	private Produto produto = new Produto();
 	

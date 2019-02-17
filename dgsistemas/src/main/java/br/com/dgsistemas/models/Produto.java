@@ -12,9 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,29 +29,20 @@ public class Produto implements Serializable {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	@Column(name = "ID_PRODUTO")
-	private long id;	
+	private long id;
+    @Column(name = "produto_image", nullable = true, columnDefinition = "BYTEA")
+    private byte[] image;    
+    @Transient
+    private String imgTO64;
 	private String nome;
 	private String descricao;
 	private Double preco;
 	private int status;
 	
 	//foreign keys
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
     @JoinColumn(name = "CATEGORIA_ID")
-	private Categoria categoria = new Categoria();
-	
-	@ManyToMany(cascade = {
-		    CascadeType.PERSIST,
-		    CascadeType.MERGE
-		})
-		@JoinTable(name = "RECEITA",
-		    joinColumns = @JoinColumn(name = "ID_PRODUTO_"),
-		    inverseJoinColumns = @JoinColumn(name = "ID_INGREDIENTE_")
-		)
-		private Set<Ingrediente> ingredientes = new HashSet<>();
-	
-	
-	
+	private Categoria categoria = new Categoria();	
 
 	public long getId() {
 		return id;
@@ -99,12 +92,20 @@ public class Produto implements Serializable {
 		this.categoria = categoria;
 	}
 
-	public Set<Ingrediente> getIngredientes() {
-		return ingredientes;
+	public byte[] getImage() {
+		return image;
 	}
 
-	public void setIngredientes(Set<Ingrediente> ingredientes) {
-		this.ingredientes = ingredientes;
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public String getImgTO64() {
+		return imgTO64;
+	}
+
+	public void setImgTO64(String imgTO64) {
+		this.imgTO64 = imgTO64;
 	}
 	
 

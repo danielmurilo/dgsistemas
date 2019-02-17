@@ -21,30 +21,39 @@ public class Ingrediente implements Serializable{
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	@Column(name = "ID_INGREDIENTE")
-	private long id;
+	private int id;
 	private String nome;
-	private int status;
+	private int estoque;
+	private String unidade;
 	
 	
 	
 	public long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getNome() {
 		return nome;
+		
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public int getStatus() {
-		return status;
+	public int getEstoque() {
+		return estoque;
 	}
-	public void setStatus(int status) {
-		this.status = status;
+	public void setEstoque(int estoque) {
+		this.estoque = estoque;
 	}
+	public String getUnidade() {
+		return unidade;
+	}
+	public void setUnidade(String unidade) {
+		this.unidade = unidade;
+	}
+	
 	
 	
 	

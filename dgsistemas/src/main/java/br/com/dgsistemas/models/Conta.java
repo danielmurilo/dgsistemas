@@ -2,13 +2,18 @@ package br.com.dgsistemas.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -29,14 +34,15 @@ public class Conta implements Serializable {
 	private int status;
 	private Double total;
 	private int delivery;
-	private String endereco;
+	private String telefone;
+	
+	@ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "ENDERECO_ID")
+	private Endereco endereco;
 	
 	@ManyToOne
     @JoinColumn(name = "FUNCIONARIO_ID")
-	private Funcionario funcionarioAbertura = new Funcionario();
-	
-	
-	
+	private Funcionario funcionarioAbertura;	
 
 	public long getId() {
 		return id;
@@ -77,6 +83,7 @@ public class Conta implements Serializable {
 	public void setFuncionarioAbertura(Funcionario funcionarioAbertura) {
 		this.funcionarioAbertura = funcionarioAbertura;
 	}
+	
 
 	public Double getTotal() {
 		return total;
@@ -102,13 +109,27 @@ public class Conta implements Serializable {
 		this.delivery = delivery;
 	}
 
-	public String getEndereco() {
+	public Endereco getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(String endereco) {
+	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+	
+	
 	
 	
 	

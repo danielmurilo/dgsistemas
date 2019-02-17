@@ -6,6 +6,7 @@ public class PedidoSerializado {
 	private String nome;
 	private int qtd;
 	private String obs;
+	private Double valorvenda;
 	
 	
 	public Long getId() {
@@ -31,6 +32,12 @@ public class PedidoSerializado {
 	}
 	public void setObs(String obs) {
 		this.obs = obs;
+	}
+	public Double getValorvenda() {
+		return valorvenda;
+	}
+	public void setValorvenda(Double valorvenda) {
+		this.valorvenda = valorvenda;
 	}
 
 	

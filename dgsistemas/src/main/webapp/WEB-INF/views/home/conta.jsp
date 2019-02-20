@@ -9,7 +9,6 @@
 <%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
 			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
 
-
 	<table id="tableContas" class="table table-striped table-wrapper-scroll-y">
 		<thead>
 			<tr>
@@ -73,9 +72,6 @@
     </div>
   </div>
 </div>
-
-
-
 <footer class="footer">
 	<div class="btn-group btn-group-justified" style="width: 100%">
 		<a class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" data-toggle="modal" data-target="#myModal">Pagar</a>
@@ -88,6 +84,14 @@
 	
 	<script type="text/javascript">	
 	//funcoes sidenavbar
+	$(window).on('load',function(){
+		if('${conta.total}' == 0.0 && '${fn:length(pedidos)}' > 0){
+				$("#labeltroco").empty();
+				$("#labeltroco").append("Deseja encerrar conta?");
+				$('#myModal').modal('show');				
+			}        
+    });
+	
 	var i = 0;
 	function openNav() {
 		if(i == 0){	i = i + 1; document.getElementById("mySidenav").style.width = "250px";
@@ -178,38 +182,45 @@
 	        ano = data.getFullYear();
 	    return ""+dia+"/"+mes+"/"+ano;
 	}
-
+		
+	$('#myModal').on('hide', function() {alert('close modal');});
+		
 
 
 function limparmodal(){$("#valorInput").val('');$("#labeltroco").empty();}
 	
 
 	function dinheiro(total){
-		if($("#valorInput").val() == ''){
-			$("#labeltroco").empty();
-			$("#labeltroco").append("Valor não informado!");
-		}else{
-				var valorInput = parseFloat($("#valorInput").val());
-				var valor;
-				if(valorInput < 0.50 || valorInput.length == 0 || valorInput.length == 'undefined' || valorInput == ''){
+		/* $.get('/checkconnectionn').then(function(result){alert(result);},function (jqXHR,textStatus,errorThrown ){alert('jqXHR: '+ jqXHR + 'textStatus: '+textStatus+' errorThrown: '+errorThrown);}); */
+				
+				if($("#valorInput").val() == ''){
 					$("#labeltroco").empty();
-					$("#labeltroco").append("Valor não permitido!");
-					}else{if( valorInput > total){
-							var troco = valorInput - total;
+					$("#labeltroco").append("Valor não informado!");
+				}else{
+						var valorInput = parseFloat($("#valorInput").val());
+						if(valorInput < 0.50 || valorInput.length == 0 || valorInput.length == 'undefined' || valorInput == ''){
 							$("#labeltroco").empty();
-							$("#labeltroco").append('Troco R$' +troco+ ' <br><a class="btn btn-default btn-primary" onclick="refresh()"> Atualizar Conta.</a>');
-							$("#alert").show();
-							$("#alert").empty();
-							$("#alert").append('Troco R$' +troco);
-							valor = total;
-								}else{
-									valor = valorInput;
-								}					
-							$.post( "/lancardinheiro/"+valor.toFixed(2)+0.01);
+							$("#labeltroco").append("Valor não permitido!");
 						}
-				}
-
+						if(valorInput > 0.49 && valorInput <= total)	{
+							$.post( "/lancardinheiro/"+valorInput.toFixed(2)+0.01);
+							setTimeout(function(){location.reload();}, 300);
+						}						
+						 if( valorInput > total){
+									var troco = valorInput - total;
+									$("#labeltroco").empty();
+									$("#labeltroco").append('Troco R$' +troco+ ' <br><a class="btn btn-default btn-primary" onclick="refresh()"> Atualizar Conta.</a>');
+									$("#alert").show();
+									$("#alert").empty();
+									$("#alert").append('Troco R$' +troco);
+									$.post( "/lancardinheiro/"+total.toFixed(2)+0.01);
+									}									
+						
+					}
 		}
+				
+
+		
 	function refresh(){location.reload();}
 
 	function cartao(total){
@@ -226,11 +237,11 @@ function limparmodal(){$("#valorInput").val('');$("#labeltroco").empty();}
 						$("#labeltroco").append("valor maior que total!");
 							}else{
 							$.post( "/lancarcartao/"+valor.toFixed(2)+0.01);
-							setTimeout(function(){location.reload();}, 500);}
-				}
-		
+							setTimeout(function(){location.reload();}, 300);
+				}		
 	
 		}
+	}
 	
 	
 	function fecharconta(total){					
@@ -243,7 +254,10 @@ function limparmodal(){$("#valorInput").val('');$("#labeltroco").empty();}
 				$("#labeltroco").append("Conta encerrada!");
 				$("#alert").show();
 				$("#alert").empty();
-				$("#alert").append("Conta Encerrada!");}}
+				$("#alert").append("Conta Encerrada!");
+				setTimeout(function(){window.location.href = "/mainpage";}, 500);
+				}
+		}
 	</script>
 	
 	

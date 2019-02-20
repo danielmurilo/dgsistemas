@@ -87,8 +87,6 @@
 </head>
 
 <body style="margin-bottom: 100px">
-<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
-			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
 			
 			
 <!-- side NavBar -->
@@ -104,7 +102,7 @@
 	  <a href="/funcionarios" style="padding-left: 60px; font-size: 15px">Funcionarios</a>  
   <a href="/compras">Compras</a>
   <a href="/estoque">Estoque</a>
-  <a href="/admin">Admin</a>  
+  <a href="/produtosmaisvendidos">Admin</a>  
   <a href="/">Sair</a>
 </div>
 

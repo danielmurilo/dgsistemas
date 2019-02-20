@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,6 +81,13 @@ public class HomeController {
 	ReceitaRepo receitaRepo;
 	@Autowired
 	CompraRepo compraRepo;
+	
+	
+	public Date horaAtualHeroku() {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.HOUR_OF_DAY, -3);
+		return c.getTime();
+	}
 
 	@ModelAttribute("funcionarioid")
 	public int setarFuncionarioIdNaSession() {
@@ -104,6 +112,21 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView("home/index");
 		mv.addObject("hidden_attribute", "hidden");
 		return mv;
+	}
+	
+	@RequestMapping("/checkconnection")
+	public void checkConnection(HttpServletResponse response) {
+		response.setContentType("text/html");
+		  PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.append("online");
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		  
+		
 	}
 
 	@RequestMapping(value = "/login")
@@ -186,7 +209,7 @@ public class HomeController {
 			c.getEndereco().setReferencia(request.getParameter("referencia"));
 			enderecoRepo.save(c.getEndereco());
 		}
-		Date hora = Calendar.getInstance().getTime();
+		Date hora = horaAtualHeroku();
 		c.setDataAbertura(hora);
 		c.setFuncionarioAbertura(funcionarioRepo.findOne(f_id));
 		contaRepo.save(c);
@@ -223,7 +246,7 @@ public class HomeController {
 				pedido.setValorVenda(pedido.getProduto().getPreco());
 				pedido.setQtd(p.getQtd());
 				pedido.setObs(p.getObs());
-				Date hora = Calendar.getInstance().getTime();
+				Date hora = horaAtualHeroku();
 				pedido.setData(hora);
 				pedido.setStatus(1);
 				pedido.setConta(contaRepo.findOne(contaid));
@@ -257,7 +280,7 @@ public class HomeController {
 		p.setValorVenda(valor * -1.00);
 		p.setQtd(1);
 		p.setStatus(1);
-		Date hora = Calendar.getInstance().getTime();
+		Date hora = horaAtualHeroku();
 		p.setData(hora);
 		p.setProduto(produtoRepo.findOne((long) 1));
 		p.setConta(contaRepo.findOne(contaid));
@@ -274,7 +297,7 @@ public class HomeController {
 		p.setValorVenda(valor * -1.00);
 		p.setQtd(1);
 		p.setStatus(1);
-		Date hora = Calendar.getInstance().getTime();
+		Date hora = horaAtualHeroku();
 		p.setData(hora);
 		p.setProduto(produtoRepo.findOne((long) 2));
 		p.setConta(contaRepo.findOne(contaid));
@@ -745,6 +768,27 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView("home/estoque");
 		List<Ingrediente> i = (List<Ingrediente>) ingredienteRepo.findAll();
 		mv.addObject("ingredientes", i);
+		return mv;
+	}
+	
+	@RequestMapping("/impressoracozinha")
+	public void impressoraCozinha(HttpServletResponse response) {
+		response.setContentType("text/html");
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.append((char) estabelecimentoRepo.findOne(1).getDelivery());
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	@GetMapping("produtosmaisvendidos")
+	public ModelAndView produtosMaisVendidos() {
+		ModelAndView mv = new ModelAndView("home/admin");
+		mv.addObject("produtos",(List<Object[]>) pedidoRepo.produtosMaisVendidos());
 		return mv;
 	}
 

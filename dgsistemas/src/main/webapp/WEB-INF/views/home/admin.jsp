@@ -4,8 +4,30 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page="header.jsp"/>
+
+
+<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
           
-          	Ainda não foi implementado
+          	<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Produto</th>
+								<th scope="col">Vendas</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="produto" items="${produtos}" varStatus="loop">
+								<tr>
+									<th>${produto[0]}</th>
+									<td>${produto[1]}</td>
+																
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>			
           
           
           </div>

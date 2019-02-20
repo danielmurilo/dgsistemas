@@ -55,7 +55,7 @@ body {
 							<label class="control-label" for="exampleInputPassword1">Senha</label>
 							<input class="form-control" id="exampleInputPassword1" placeholder="Digite sua senha" type="password" name="password" required="required">
 						</div>
-						<button type="submit" class="btn btn-default">Entrar</button>
+						<button type="submit" class="btn btn-primary">Entrar</button>
 
 						<p>
 						<div ${hidden_attribute} class="row">

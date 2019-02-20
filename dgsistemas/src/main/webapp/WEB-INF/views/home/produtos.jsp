@@ -4,6 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page="header.jsp"/>
+
+
+<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
 				
 				
 					<div class="col-md-12 jumbotron" style="padding: 10px;">
@@ -39,7 +43,7 @@
 							  </div>
 							  <div class="form-group">
 							    <label for="inputpreco">Preco:</label>
-							    <input type="number" class="form-control" id="inputpreco" name="inputpreco">
+							    <input type="number" step="0.01" class="form-control" id="inputpreco" name="inputpreco">
 							  </div>
 							  <div class="form-group">
 							  	<div class="custom-control custom-switch">
@@ -78,13 +82,12 @@
 								    </div>
 								  </div>
 								  <input type="number" class="form-control" placeholder="Qtd" id="inputqtd">
-								  <button class="btn btn-primary" onclick="salvaringrediente()">Salvar</button>
-								  <br>
-								  <div class="alert alert-danger" id="alert">
-								  <button type="button" class="close" data-dismiss="alert">×</button>
-								    <strong>!!!</strong> É preciso inserir quantidade e selecionar ingrediente!
-								  </div>
+								  <button class="btn btn-primary" onclick="salvaringrediente()">Salvar</button>						  
 							</div>
+							<div class="alert alert-danger" id="alert" style="display: none;">
+								  <button type="button" class="close" data-dismiss="alert">×</button>
+								  <strong> É preciso inserir quantidade e selecionar ingrediente!</strong>
+						   </div>
 							
 							
 							
@@ -189,6 +192,9 @@ function selecionaringrediente (id){
 	idingrediente = id;
 }
 function salvaringrediente(){
+	if($("#inputqtd").val() == '' || idingrediente < 1 || idproduto < 1){
+		$("#alert").show();
+		}
 	var qtdd = $("#inputqtd").val();
 	if(qtdd>0){
 		if(idproduto>0){
@@ -198,11 +204,8 @@ function salvaringrediente(){
 				setTimeout(function(){ findreceitas(idproduto); }, 300);
 				
 				}
-
 			}
-
-		}
-	
+		}	
 	
 }
 

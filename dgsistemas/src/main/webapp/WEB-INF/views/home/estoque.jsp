@@ -6,6 +6,10 @@
 <jsp:include page="header.jsp"/>
 
 
+<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+
+
 				<div class="table-responsive">
 					<table class="table table-striped">
 					  <tr>

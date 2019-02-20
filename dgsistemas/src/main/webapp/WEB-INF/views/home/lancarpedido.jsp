@@ -6,6 +6,10 @@
 <jsp:include page="header.jsp"/>
 
 
+<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+
+
 				<!-- table comeca aqui -->
 				<table class="table table-striped" id="mainTable">
 					<tbody style="text-align: center;">
@@ -123,7 +127,8 @@
         Pedido Lançado!!!
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+      	<button type="button" class="btn btn-primary" onclick="imprimirpedido()"><i style="color: white; font-size: 18px;" class="material-icons">local_printshop</i></button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" style="font-size: 17px;" onclick="location.href='/lancarpedido';">Ok</button>
       </div>
     </div>
   </div>
@@ -135,7 +140,6 @@
 
 
 	<script type="text/javascript">
-
 	//funcoes sidenavbar
 	var i = 0;
 	function openNav() {
@@ -311,7 +315,7 @@
 						//alert('request failed'+errorThrown);
 						}
 						});
-					imprimirpedido();
+					/* imprimirpedido(); */
 					limparCampos();			
 					$("#tabelaPedidos").empty();
 					 $("#btnLancarTodos").attr("disabled", true);
@@ -319,7 +323,8 @@
 					$('#modalConfirmarLancado').modal('show');
 					$("#btnAdcionar").attr("onclick","adcionar()");
 					$("#btnLancarTodos").attr("onclick","lancarPedidos()");
-					setTimeout(function(){ globalListaPedidos.length = 0; }, 300);
+					/* setTimeout(function(){ globalListaPedidos.length = 0; }, 300);
+					$('#selectprodutos')[0].options.length = 0; */
 					}
 							
 					}
@@ -359,8 +364,7 @@
 				$("#semmolho").prop( "checked", false );
 				$("#paraviagem").prop( "checked", false );
 				$("#btnAdcionar").attr("onclick","");
-				$("#selectcategorias").val('0');
-				$('#selectprodutos')[0].options.length = 0;								
+				$("#selectcategorias").val('0');												
 				}
 
 		

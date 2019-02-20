@@ -8,12 +8,16 @@
 <jsp:include page="header.jsp"/>
 
 
+<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+
+
 		<form role="form" action="/abrirconta/salvarconta" method="post" id="form1">
 			<div class="form-group">
 				<label class="control-label" for="inputNomeMesa">Nome/Mesa</label>
 				<input class="form-control" id="nome_mesa" type="text"	placeholder="Digite o nome do cliente ou nº da mesa"	required="required" name="nome_mesa">
 				<br>
-				<input type="checkbox" class="form-check-input" id="deliverycheck" name="deliverycheck">
+				<input style="padding-left: 50px" type="checkbox" class="form-check-input" id="deliverycheck" name="deliverycheck">
 				<label class="form-check-label" for="deliverycheck">Delivery</label>
 				
 				<div id="endereco" style="display: none;">
@@ -46,7 +50,7 @@
 					<input class="form-control" id="uf" type="text"	value="PE" name="uf">
 				</div>				
 			</div>
-			<button type="submit" target="_self" class="btn btn-default">Salvar</button>
+			<button type="submit" target="_self" class="btn btn-primary btn-block">Salvar</button>
 		</form>
 		
 	</div>

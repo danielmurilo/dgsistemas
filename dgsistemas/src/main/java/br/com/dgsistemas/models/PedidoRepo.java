@@ -1,6 +1,7 @@
 package br.com.dgsistemas.models;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -32,6 +33,7 @@ public interface PedidoRepo extends CrudRepository<Pedido, Long> {
 			  nativeQuery = true)
 	public Double valorTotalVendasEmCartaoPorDataAndFuncionario(@Param("date") Date date, @Param("id") int idFuncionario);
 	
-	
+	@Query(value = "select produto.nome, sum(pedido.qtd) as total from pedido inner join produto on pedido.produto_id = produto.id_produto WHERE NOT (produto.id_produto = 2 OR produto.id_produto = 1)  GROUP by  produto.nome ORDER by total DESC", nativeQuery = true)
+	public List<Object[]>  produtosMaisVendidos();
 
 }

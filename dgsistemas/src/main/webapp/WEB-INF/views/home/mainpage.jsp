@@ -5,6 +5,10 @@
 
 <jsp:include page="header.jsp"/>
 
+
+<%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
+			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+
 			<input type="hidden" class="form-control" type="text" name="inputHiddenFuncionarioID" value="${funcionarioid}">
 				<div class="table-responsive">
 					<table class="table table-striped">
@@ -13,7 +17,6 @@
 								<th scope="col">Conta</th>
 								<th scope="col">Nome/Mesa</th>
 								<th scope="col">Total</th>
-								<th scope="col"></th>
 								<th scope="col"></th>
 							</tr>
 						</thead>
@@ -31,7 +34,7 @@
 								</tr>
 							</c:forEach>
 							<tr>
-							<td colspan="5"><div>
+							<td colspan="4"><div>
 									<a class="btn btn-primary btn-block" href="/abrirconta" target="_self">Abrir Conta</a>
 								</div></td>
 								</tr>

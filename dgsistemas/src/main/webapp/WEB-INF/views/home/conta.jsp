@@ -113,9 +113,10 @@
 		    p.document.write(
 				    '<html><style>	@page { size: auto;  margin: 1mm; }</style><body onload=\"window.print(); window.close();\">'+
 				    '<center>'+
-				    '${estabelecimento.razaoSocial}'.toUpperCase() + '<br><br>'+
+				    '${estabelecimento.nomeFantasia}'.toUpperCase() + '<br>'+
 				    '${estabelecimento.logradouro}, ${estabelecimento.numero} - ${estabelecimento.bairro}<br>'+
 				    '${estabelecimento.cidade} - ${estabelecimento.uf} - CEP ${estabelecimento.cep} <br>'+
+				    '${estabelecimento.telefone}<br>'+
                     '</center><br>'+
                     '<strong>CNPJ:${estabelecimento.cnpj}</strong>'+
                     '<br>----------------------------------------------------<br>'+

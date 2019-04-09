@@ -679,6 +679,9 @@ public class HomeController {
 		if(!"".equals(request.getParameter("id"))) {
 			p = produtoRepo.findOne(Long.parseLong(request.getParameter("id")));
 		}
+		if(!"0".equals(request.getParameter("selectcategorias"))) {
+			p.setCategoria(categoriaRepo.findOne(Long.parseLong(request.getParameter("selectcategorias"))));
+		}		
 		p.setNome(request.getParameter("inputnome"));
 		p.setDescricao(request.getParameter("inputdescricao"));
 		p.setPreco(Double.valueOf(request.getParameter("inputpreco")));

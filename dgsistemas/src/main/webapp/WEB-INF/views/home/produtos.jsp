@@ -9,21 +9,22 @@
 <%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
 			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
 				
+				<form action="/salvarproduto" method="post" enctype="multipart/form-data">
 				
 					<div class="col-md-12 jumbotron" style="padding: 10px;">
-						<select class="custom-select" style="height: 40px" id="selectcategorias">
+						<select class="custom-select" style="height: 40px" id="selectcategorias" name="selectcategorias">
 							<option value="0" selected>Escolha Categoria</option>
 							<c:forEach var="categoria" items="${categorias}" varStatus="loop">
 								<option  value="${categoria.id}">${categoria.nome}</option>
 							</c:forEach>
 						</select>
 						<br><br>
-						<select class="custom-select" style="height: 40px" id="selectprodutos">
+						<select class="custom-select" style="height: 40px" id="selectprodutos" name="selectprodutos">
 							<option value="0" selected>^^^^^^</option>							
 						</select>
 					</div>
 					
-					<form action="/salvarproduto" method="post" enctype="multipart/form-data">
+					
 							  <div class="form-group">
 							    <input type="hidden" class="form-control" id="id" name="id">
 							  </div>

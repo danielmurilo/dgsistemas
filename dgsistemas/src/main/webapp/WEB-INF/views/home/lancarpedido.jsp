@@ -101,7 +101,7 @@
 	<footer class="footer">
 	<!-- <p class="bg-primary" style="height: 4px; margin-bottom: 2px;"></p> -->
 	<div class="btn-group btn-group-justified" style="width: 100%; color: white">
-		<a class="btn btn-default btn-primary" href="/mainpage" target="_self">Voltar</a>
+		<a class="btn btn-default btn-primary" onclick="window.history.back()" target="_self">Voltar</a>
 		<a class="btn btn-default btn-danger" id="btnLancarTodos" target="_self" disabled="true">Salvar</a>
 		<a class="btn btn-default btn-success" id="btnAdcionar" target="_self" disabled="true">Adcionar</a>
 	</div>

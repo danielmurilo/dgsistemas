@@ -22,7 +22,7 @@
 		</thead>
 		<tbody>
 			<c:forEach var="pedido" items="${pedidos}" varStatus="loop">
-				<tr>
+				<tr onclick="modalestorno(${pedido.id}, ${pedido.produto.id}, ${pedido.qtd}, '${pedido.produto.nome}', '${pedido.obs}', '${pedido.valorVenda}')">
 					<td>${pedido.qtd}</td>
 					<td>${pedido.produto.nome}<br> ${pedido.obs}</td>					
 					<td>${pedido.valorVenda * pedido.qtd}</td>
@@ -72,6 +72,36 @@
     </div>
   </div>
 </div>
+
+
+<!-- Modal parar estornar pedido -->
+<div class="modal" tabindex="-1" role="dialog" id="modalestorno">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Menu Estorno</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="textopedidoestorno"></p>
+        <p id="textoobspedidoestorno"></p>
+      </div>
+      <div class="modal-footer">
+        <button id="buttonestorno" onclick="" type="button" class="btn btn-primary">Estornar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <br>
+        <button id="buttonconfirmarestorno" onclick="" type="button" class="btn btn-primary">Sim, Desejo Realmente Estornar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <footer class="footer">
 	<div class="btn-group btn-group-justified" style="width: 100%">
 		<a class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" data-toggle="modal" data-target="#myModal">Pagar</a>
@@ -108,6 +138,45 @@
 		 document.getElementById("mySidenav").style.width = "0";
 		 document.getElementById("mySidenav").style.borderRight = "0px solid white";
 	}//fim funcoes sidenavbar
+
+
+	function modalestorno(pedidoid, produtoid, qtdpedido, nomeproduto, obspedido, valorvenda){
+		if(qtdpedido>0){
+			$('#textopedidoestorno').text(qtdpedido + 'x ' + nomeproduto);
+			$('#textoobspedidoestorno').text(obspedido.replace(/<br>/g, ""));		
+			$("#buttonestorno").attr("onclick","estornar()");
+			$("#buttonconfirmarestorno").attr("onclick","confirmarestorno("+pedidoid+", "+qtdpedido+", "+produtoid+", '"+nomeproduto+"', "+valorvenda+")");
+			$('#buttonconfirmarestorno').hide();
+			$('#modalestorno').modal('show');
+			}
+		
+		}
+
+	function estornar(){
+			$('#buttonconfirmarestorno').show();
+		}
+
+	function confirmarestorno(pedidoid, qtdpedido, produtoid, nomeproduto, valorvendaa){
+		var globalListaPedidos = [];
+		var pedido = {id:produtoid, nome:nomeproduto, qtd:qtdpedido*-1, obs:'Item Estornado', valorvenda:valorvendaa};
+		globalListaPedidos.push(pedido);
+		
+		$.ajax({
+			type: 'POST',
+			dataType: 'json',
+			contentType:'application/json',
+			url: "/salvarPedidos",
+			data:JSON.stringify(globalListaPedidos),
+			success: function(data, textStatus ){
+			console.log(data);				
+			},
+			error: function(xhr, textStatus, errorThrown){
+			//alert('request failed'+errorThrown);
+			}
+			});
+		
+		setTimeout(function(){location.reload();}, 500);
+		}
 
 
 

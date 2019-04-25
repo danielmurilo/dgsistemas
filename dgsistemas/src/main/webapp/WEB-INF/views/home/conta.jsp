@@ -82,6 +82,8 @@
 		</footer>
 	
 	
+	<script type="text/javascript" src="../../../img/epos-2.9.0.js"></script>
+	<script type="text/javascript" src="../../../img/xxx.js"></script>
 	<script type="text/javascript">	
 	//funcoes sidenavbar
 	$(window).on('load',function(){
@@ -108,22 +110,53 @@
 	}//fim funcoes sidenavbar
 
 
+
+		function imprimircontaold() {
+            //Create an ePOS-Print Builder object
+            var builder = new epson.ePOSBuilder();
+            //Create a print document
+            builder.addTextLang('en')
+            builder.addTextSmooth(true);
+            builder.addTextFont(builder.FONT_A);
+            builder.addTextSize(3, 3);
+            builder.addText('Hello,\tWorld!\n');            
+            builder.addCut(builder.CUT_FEED);
+            //Acquire the print document
+            var request = builder.toString();
+            var address = '192.168.50.1';
+            //Create an ePOS-Print object
+            var epos = new epson.ePOSPrint(address);
+            epos.onreceive = function (res) {
+            //When the printing is not successful, display a message
+            if (!res.success) {
+               alert('A print error occurred');
+               }
+            }
+            //Send the print document            
+            epos.send(request);
+            alert(builder.toString());
+        }	
+	
+
+	
+	
 	function imprimirconta(){
-			var p = window.open('', '', 'left=0,top=0,width=8mm,height=100,toolbar=0,scrollbars=0,status =0');
+			var p = window.open('', '', 'left=0,top=0,width=80mm,toolbar=0,scrollbars=0,status=0');
 		    p.document.write(
-				    '<html><style>	@page { size: auto;  margin: 1mm; }</style><body onload=\"window.print(); window.close();\">'+
+				    '<html><style>@page { size: 80mm 297mm;  margin: 1mm; }</style>'+
+				    '<body onload=\"window.print();\">'+
+				    '<section class="sheet">'+
 				    '<center>'+
 				    '${estabelecimento.nomeFantasia}'.toUpperCase() + '<br>'+
-				    '${estabelecimento.logradouro}, ${estabelecimento.numero} - ${estabelecimento.bairro}<br>'+
-				    '${estabelecimento.cidade} - ${estabelecimento.uf} - CEP ${estabelecimento.cep} <br>'+
+				    '${estabelecimento.logradouro}, ${estabelecimento.numero}<br>'+
+				    '${estabelecimento.bairro} - ${estabelecimento.cidade} - ${estabelecimento.uf}<br>'+
 				    '${estabelecimento.telefone}<br>'+
                     '</center><br>'+
                     '<strong>CNPJ:${estabelecimento.cnpj}</strong>'+
                     '<br>----------------------------------------------------<br>'+
                      dataAtualFormatada().substring()+' &nbsp;'+time()+ '<span style="float:right;"><strong>COO: ${conta.id} &nbsp </strong> </span>'+
-                    '<center><strong>CONTA</strong></center>'+
+                    '<center>Recibo Não Fiscal</center>'+
                     '<br>QTD &nbsp;&nbsp;&nbsp; ITEM &nbsp;&nbsp;&nbsp; UNIT R$ &nbsp;&nbsp;&nbsp; TOTAL R$ <br>'+
-
                     <c:forEach var="pedido" items="${pedidos}" varStatus="loop">
                     '<p style="text-align: left;">&nbsp;&nbsp; ${pedido.qtd} &nbsp;&nbsp;'+
                     '${fn:substring(pedido.produto.nome, 0, 12)}'+
@@ -160,6 +193,7 @@
 						</c:when>					
 					</c:choose>
 					'<br><br><center><p style="font-size: 10">DG Sistemas (81)99939-3017</p><center>'+
+					'</section>'+
                     '</body></html>');
 		    p.document.close();
 		}

@@ -169,7 +169,7 @@
 	function imprimirpedido(){
 		$.get("/findestabelecimento/", function(json) { 
 			var p = window.open('', '', 'left=0,top=0,width=8mm,height=100,toolbar=0,scrollbars=0,status =0');
-		    p.document.write('<html><style>	@page { size: auto;  margin: 1mm; }</style><body onload=\"window.print();  window.close();\">'+
+		    p.document.write('<html><style>	@page { size: auto;  margin: 1mm; }</style><body onload=\"window.print()\">'+
 				    '<center>'+
 				    json.razaoSocial.toUpperCase() + '<br>'+
 				    'COMANDA INTERNA'+				    
@@ -300,7 +300,6 @@
 
 		function lancarPedidos(){
 			if(globalListaPedidos.length < 1){
-
 				}else{
 					$.ajax({
 						type: 'POST',
@@ -323,6 +322,7 @@
 					$('#modalConfirmarLancado').modal('show');
 					$("#btnAdcionar").attr("onclick","adcionar()");
 					$("#btnLancarTodos").attr("onclick","lancarPedidos()");
+					imprimirpedido();
 					/* setTimeout(function(){ globalListaPedidos.length = 0; }, 300);
 					$('#selectprodutos')[0].options.length = 0; */
 					}

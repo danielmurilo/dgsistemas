@@ -109,7 +109,8 @@
 <nav class="navbar sticky-top navbar-expand-md bg-primary navbar-dark">
   <!-- Brand -->
   <a class="navbar-brand" href="/mainpage">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe-kYZ0PsCaKCSO0la7LZVLYUg5y9aNji9EJ4NJHTqk67PkJKoSw" width="30" height="30" class="d-inline-block align-top rounded-circle" alt="">
+  <!--<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe-kYZ0PsCaKCSO0la7LZVLYUg5y9aNji9EJ4NJHTqk67PkJKoSw" width="30" height="30" class="d-inline-block align-top rounded-circle" alt=""> -->
+  <img src="../../../img/waiterExpressLogo.jpg" width="30" height="30" class="d-inline-block align-top rounded-circle" alt="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe-kYZ0PsCaKCSO0la7LZVLYUg5y9aNji9EJ4NJHTqk67PkJKoSw">
   Waiter Express
   </a> <i class="material-icons" style="font-size:30px;cursor:pointer; color: white;  position: absolute; right: 20px;" onclick="openNav()">menu</i>
 </nav>

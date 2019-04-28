@@ -15,7 +15,7 @@
 		<form role="form" action="/abrirconta/salvarconta" method="post" id="form1">
 			<div class="form-group">
 				<label class="control-label" for="inputNomeMesa">Nome/Mesa</label>
-				<input class="form-control" id="nome_mesa" type="text"	placeholder="Digite o nome do cliente ou nº da mesa"	required="required" name="nome_mesa">
+				<input class="form-control" id="nome_mesa" type="text"	placeholder="Digite o nome do cliente ou nº da mesa"	required  name="nome_mesa">
 				<br>
 				<input style="padding-left: 50px" type="checkbox" class="form-check-input" id="deliverycheck" name="deliverycheck">
 				<label class="form-check-label" for="deliverycheck">Delivery</label>

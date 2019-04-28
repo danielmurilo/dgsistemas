@@ -168,8 +168,10 @@
 
 	function imprimirpedido(){
 		$.get("/findestabelecimento/", function(json) { 
-			var p = window.open('', '', 'left=0,top=0,width=8mm,height=100,toolbar=0,scrollbars=0,status =0');
-		    p.document.write('<html><style>	@page { size: auto;  margin: 1mm; }</style><body onload=\"window.print()\">'+
+			var p = window.open('', '', 'left=0,top=0,width=80mm,height=100,toolbar=0,scrollbars=0,status =0');
+		    p.document.write('<html><style>	@page { size: auto;  margin: 1mm; }</style>'+
+		    		'<style>@media print{.noprint{display:none;}}</style>'+
+				    '<body onload=\"window.print()\">'+				    
 				    '<center>'+
 				    json.razaoSocial.toUpperCase() + '<br>'+
 				    'COMANDA INTERNA'+				    
@@ -185,6 +187,8 @@
 						</c:when>
 					</c:choose>        
 					'</h3>'+
+					'<center><button class=\"noprint\" onclick=\"window.print()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:140px;\">Imprimir Novamente</button><br><br>'+
+					'<button class=\"noprint\" onclick=\"window.close()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:10px;\">Fechar Impressão</button></center>'+
                     '</body></html>');
 		    p.document.close();		    
 			});
@@ -364,7 +368,8 @@
 				$("#semmolho").prop( "checked", false );
 				$("#paraviagem").prop( "checked", false );
 				$("#btnAdcionar").attr("onclick","");
-				$("#selectcategorias").val('0');												
+				$("#selectcategorias").val('0');
+				$("#selectprodutos").val('0');												
 				}
 
 		

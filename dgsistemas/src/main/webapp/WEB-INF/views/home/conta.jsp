@@ -212,7 +212,8 @@
 	function imprimirconta(){
 			var p = window.open('', '', 'left=0,top=0,width=80mm,toolbar=0,scrollbars=0,status=0');
 		    p.document.write(
-				    '<html><style>@page { size: 80mm 297mm;  margin: 1mm; }</style>'+
+				    '<html><style>@page { size: auto;  margin: 1mm; }</style>'+
+				    '<style>@media print{.noprint{display:none;}}</style>'+
 				    '<body onload=\"window.print();\">'+
 				    '<section class="sheet">'+
 				    '<center>'+
@@ -261,8 +262,10 @@
 						'${conta.endereco.referencia}'+
 						</c:when>					
 					</c:choose>
-					'<br><br><center><p style="font-size: 10">DG Sistemas (81)99939-3017</p><center>'+
-					'</section>'+
+					'<br><br><center><p style="font-size: 10">DG Sistemas (81)99939-3017</p><center>'+					
+					'</section><br>'+
+					'<center><button class=\"noprint\" onclick=\"window.print()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:140px;\">Imprimir Novamente</button><br><br>'+
+					'<button class=\"noprint\" onclick=\"window.close()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:10px;\">Fechar Impressão</button></center>'+
                     '</body></html>');
 		    p.document.close();
 		}

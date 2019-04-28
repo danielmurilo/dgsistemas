@@ -13,62 +13,83 @@
 			<table  style="width: 100%"  border="0">
 		      <tbody>
 		        <tr>
-			        <td>Selecione uma data:</td>
-			        <td>Funcionario:</td>
+			        <td colspan="4">Selecione Funcionário e Data:</td>
 		        </tr>
 		        <tr>
-		          <td><form action="/exibirCaixa/0/inputCaixaDate/" id="formCaixa">	
-						<input type="date" name="inputCaixaDate" required>
-						<input type="submit">
-						</form>
-		          </td>
-		
-		          <td>
-		      			<div class="dropdown">
-							<button class="btn btn-primary dropdown-toggle" type="button" id="buttonDropDown"
-								data-toggle="dropdown" value="Todos"> Todos	</button>
-							<ul class="dropdown-menu">
-									<li><a onclick="setarFuncionario(0, Todos)" value="Todos">Todos</a></li>
-									<li class="divider"></li>
+		          <td colspan="4">
+		          	<form action="/exibirCaixa/0/inputCaixaDate/" id="formCaixa">
+          		   <div class="input-group mb-3">
+          		   <div class="input-group-prepend">
+          		   		<div class="dropdown" >
+							<button class="btn btn-primary dropdown-toggle" type="button" id="buttonDropDown" data-toggle="dropdown" value="Todos" aria-expanded="false">
+							 	Todos	
+							 </button>
+							 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+							 	<button class="dropdown-item" type="button" onclick="setarFuncionario(0, 'Todos')" value="Todos">Todos</button>
+									<div class="dropdown-divider"></div>
 								<c:forEach var="funcionario" items="${funcionarios}" varStatus="loop">
-									<li><a value="${funcionario.login}" onclick="setarFuncionario(${funcionario.id}, '${funcionario.login}')">${funcionario.login}</a></li>
-									<li class="divider"></li>
-								</c:forEach>
-							</ul>
-						</div>
-		          </td>
+									<button class="dropdown-item" type="button" value="${funcionario.login}" onclick="setarFuncionario(${funcionario.id}, '${funcionario.login}')">${funcionario.login}</button>
+									<div class="dropdown-divider"></div>
+								</c:forEach>							 
+							 </div>								
+						</div>				
+          		   </div>
+					  <input type="date" class="form-control" placeholder="Data" aria-label="Data" aria-describedby="basic-addon2" name="inputCaixaDate" required>
+					  <div class="input-group-append">
+					    <button class="btn btn-primary" type="submit">Enviar</button>
+					  </div>
+					</div>
+				   </form>				   					
+		          </td>		    
 				</tr>
-		      </tbody>
-		    </table>
-			
-			
-			<table class="table table-striped">
-		  <thead>
-		  <tr><td colspan="3">Recebimentos:</td>
-		  </tr>
+			<tr><td colspan="4">Recebimentos:</td></tr>
 		    <tr>			
 			<td>Dinheiro: <br>R$ ${valortotalemdinheiro * -1}</td>			
 		    <td>Cartão: <br>R$ ${valortotalemcartao * -1}</td>
-		    <td>Total: <br>${(valortotalemdinheiro + valortotalemcartao)*-1}</td>
+		    <td>Total: <br>R$ ${(valortotalemdinheiro + valortotalemcartao)*-1}</td>
+		    <td><a id="printButton" class="btn btn-default btn-primary" onclick="imprimircaixa()"><i style="color: white" class="material-icons">print</i></a></td>
 		    </tr>
+		      </tbody>
+		    </table>
+		    
+		    
+		    
+		    
+			
+			<div class="table-responsive">
+		  <table class="table table-striped">
+		  <thead>	
 		  </thead>
 		  
 		  <tbody>
 		    <tr>
 		      <td scope="col">Conta</td>
 		      <td scope="col">Nome/Mesa</td>
-		      <td scope="col">Total</td>
+		      <td scope="col">Valor</td>
+		      <td scope="col">Forma</td>
+		      <td scope="col">Hora</td>		      
 		      <td scope="col">Funcionario</td>
 		      <td scope="col">Status</td>
 		    </tr>
-		 			<c:forEach var="conta" items="${contas}" varStatus="loop">
+		 			<c:forEach var="pedido" items="${pedidos}" varStatus="loop">
 							<tr>
-								<th>${conta.id}</th>
-								<td>${conta.nome_mesa}</td>
-								<td>${conta.total}</td>
-								<td>${conta.funcionarioAbertura.nome}</td>
+								<th>${pedido.conta.id}</th>
+								<td>${pedido.conta.nome_mesa}</td>
+								<td>${pedido.valorVenda}</td>
+								
 								<c:choose>
-									<c:when test="${conta.status>0}">
+									<c:when test="${pedido.produto.id==1}">
+										<td>Dinheiro</td>
+									</c:when>
+									<c:when test="${pedido.produto.id==2}">
+										<td>Cartão</td>
+									</c:when>
+								</c:choose>
+								
+								<td><fmt:formatDate value="${pedido.data}" pattern="HH:mm:ss"/></td>								
+								<td>${pedido.conta.funcionarioAbertura.nome}</td>
+								<c:choose>
+									<c:when test="${pedido.conta.status>0}">
 										<td>Aberta</td>
 									</c:when>
 									<c:otherwise>
@@ -80,6 +101,7 @@
 						</c:forEach>		    
 		  </tbody>
 		</table>
+		</div>
 	</div>
 </div>
 </div>
@@ -113,8 +135,78 @@
 	}//fim funcoes sidenavbar
 
 		function setarFuncionario(id, login){
-			$("#buttonDropDown").val(login);
+			$("#buttonDropDown").html(login);
 			$('#formCaixa').attr('action', '/exibirCaixa/'+id+'/{inputCaixaDate}');				
 			}
+		
+		window.onload = function(){
+			$("#printButton").hide();
+			 if ("${fn:length(pedidos)}" > 0){
+				 $("#printButton").show();
+				 }
+			}
+
+		function imprimircaixa(){
+			var p = window.open('', '', 'left=0,top=0,width=80mm,toolbar=0,scrollbars=0,status=0');
+		    p.document.write(
+				    '<html><style>@page { size: auto;  margin: 1mm; }</style>'+
+				    '<style>@media print{.noprint{display:none;}}</style>'+
+				    '<body onload=\"window.print();\">'+
+				    '<section class="sheet">'+
+				    '<center>'+
+				    '${estabelecimento.nomeFantasia}'.toUpperCase() + '<br>'+
+                    'Borderô de Caixa Data: <fmt:formatDate value="${dataCaixa}" pattern="dd/MM/yyyy"/>'+
+                    '<br>'+
+                    '----------------------------------------------------'+
+                    '<br></center>'+
+					'<table>'+
+					'<thead>Recebimentos: </thead>'+
+                    '<tbody>'+
+                    '<tr><td colspan="2">Dinheiro:<br>R$ ${valortotalemdinheiro * -1}</td>'+
+                    '<td colspan="2">Cartões: <br>R$ ${valortotalemcartao * -1}</td>'+
+                    '<td colspan="2">Total: <br>R$ ${(valortotalemdinheiro + valortotalemcartao)*-1}</td> </tr><br>'+
+                    '<tr><td colspan="6">'+
+                    '--------------------------------------------------'+
+                    '<td></tr>'+                    
+                    '<tr><td>Conta</td><td>Valor</td><td>Forma</td><td>Hora</td><td>Funcion.</td></tr>'+                    
+                    '<c:forEach var="pedido" items="${pedidos}" varStatus="loop">'+
+					'<tr>'+
+						'<td>${pedido.conta.id}</td>'+
+						'<td>${pedido.valorVenda}</td>'+						
+						'<c:choose><c:when test="${pedido.produto.id==1}"><td>Dinh</td></c:when><c:when test="${pedido.produto.id==2}"><td>Cartão</td></c:when></c:choose><td><fmt:formatDate value="${pedido.data}" pattern="HH:mm:ss"/></td>'+	
+						'<td>${fn:substring(pedido.conta.funcionarioAbertura.nome,0,6)}</td>'+						    
+					'</tr>'+
+				'</c:forEach>'+		    
+                    
+                    '</tbody>'+                    
+                    '</table>'+
+                    '<br>Impresso em: '+dataAtualFormatada().substring()+' &nbsp;'+time()+
+                    '<center><button class=\"noprint\" onclick=\"window.print()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:140px;\">Imprimir Novamente</button><br><br>'+
+					'<button class=\"noprint\" onclick=\"window.close()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:10px;\">Fechar Impressão</button></center>'+
+                    '</body>'+
+                    '</html>');
+		    p.document.close();
+
+			}
+
+
+		function time() {
+			  var d = new Date();
+			  var n = d.toLocaleTimeString();
+			  return n;
+			}
+		
+		
+		function dataAtualFormatada(){
+		    var data = new Date();
+		        dia  = data.getDate().toString();
+		        if(dia.length == 0){ dia = '00'}
+				if(dia.length == 1){ dia = '0' + dia; };	        
+		        mes  = (data.getMonth()+1).toString(); //+1 pois no getMonth Janeiro começa com zero.
+		        if(mes.length == 1){ mes = '0' + mes; };
+		        ano = data.getFullYear();
+		    return ""+dia+"/"+mes+"/"+ano;
+		}
+
 	</script>
 </html>

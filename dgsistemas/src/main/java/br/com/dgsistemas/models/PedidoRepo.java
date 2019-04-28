@@ -35,5 +35,14 @@ public interface PedidoRepo extends CrudRepository<Pedido, Long> {
 	
 	@Query(value = "select produto.nome, sum(pedido.qtd) as total from pedido inner join produto on pedido.produto_id = produto.id_produto WHERE NOT (produto.id_produto = 2 OR produto.id_produto = 1)  GROUP by  produto.nome ORDER by total DESC", nativeQuery = true)
 	public List<Object[]>  produtosMaisVendidos();
+	
+	@Query(value = "SELECT c.id_conta, LEFT(c.nome_mesa, 10) as nome_mesa, p.\"data\", c.status, c.funcionario_id, COALESCE(c.delivery, '0'), (p.valor_venda*-1) as valor_venda, p.id_pedido, c.id_conta, p.conta_id, p.obs, p.produto_id, p.qtd FROM pedido p inner join conta c on p.conta_id = c.id_conta WHERE (p.produto_id = 1 or p.produto_id = 2) and  DATE(c.data_abertura) = :date", 
+			  nativeQuery = true)
+	public List<Pedido> listarPagamentosPorData(@Param("date") Date date);
+	
+	@Query(value = "SELECT c.id_conta, LEFT(c.nome_mesa, 10) as nome_mesa, p.\"data\", c.status, c.funcionario_id, COALESCE(c.delivery, '0'), (p.valor_venda*-1) as valor_venda, p.id_pedido, c.id_conta, p.conta_id, p.obs, p.produto_id, p.produto_id, p.qtd FROM pedido p inner join conta c on p.conta_id = c.id_conta WHERE (p.produto_id = 1 or p.produto_id = 2) and  (DATE(c.data_abertura) = :date and p.funcionario_id = :id)", 
+			  nativeQuery = true)
+	public List<Pedido> listarPagamentosPorDataEFuncionario(@Param("date") Date date, @Param("id") int idFuncionario);
+	
 
 }

@@ -323,7 +323,7 @@
 					$("#tabelaPedidos").empty();
 					 $("#btnLancarTodos").attr("disabled", true);
 					 $("#btnAdcionar").attr("disabled", true);
-					$('#modalConfirmarLancado').modal('show');
+					/*$('#modalConfirmarLancado').modal('show');*/
 					$("#btnAdcionar").attr("onclick","adcionar()");
 					$("#btnLancarTodos").attr("onclick","lancarPedidos()");
 					imprimirpedido();

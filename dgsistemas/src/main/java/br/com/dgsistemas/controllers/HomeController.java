@@ -173,12 +173,10 @@ public class HomeController {
 		List<Pedido> pedidos = (List<Pedido>) pedidoRepo.listarPedidosPorConta(id);
 		Conta conta = contaRepo.findContaComtotal(id);
 		conta.setTotal(contaRepo.findTotal(id));
-
-		Estabelecimento e = estabelecimentoRepo.findOne(1);
 		
 		mv.addObject("pedidos", pedidos);
 		mv.addObject("conta", conta);
-		mv.addObject("estabelecimento", e);
+		mv.addObject("estabelecimento", estabelecimentoRepo.findOne(1));
 		return mv;
 
 	}
@@ -340,31 +338,24 @@ public class HomeController {
 	public ModelAndView exibirCaixa(@RequestParam("inputCaixaDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
 			@PathVariable("idFuncionario") String idFuncionario) {
 		ModelAndView mv = new ModelAndView("home/caixa");
-		List<Conta> contas;
+		List<Pedido> pedidos;
 		if (Integer.parseInt(idFuncionario) > 0) {
-			contas = (List<Conta>) contaRepo.listarContasComTotalPorDataAndFuncionario(date,
-					Integer.parseInt(idFuncionario));
 			mv.addObject("valortotalemdinheiro",
 					pedidoRepo.valorTotalVendasEmDinheiroPorDataAndFuncionario(date, Integer.parseInt(idFuncionario)));
 			mv.addObject("valortotalemcartao",
 					pedidoRepo.valorTotalVendasEmCartaoPorDataAndFuncionario(date, Integer.parseInt(idFuncionario)));
+			pedidos = (List<Pedido>) pedidoRepo.listarPagamentosPorDataEFuncionario(date, Integer.parseInt(idFuncionario));
 		} else {
-			contas = (List<Conta>) contaRepo.listarContasComTotalPorData(date);
+
 			mv.addObject("valortotalemdinheiro", pedidoRepo.valorTotalVendasEmDinheiroPorData(date));
-			mv.addObject("valortotalemcartao", pedidoRepo.valorTotalVendasEmCartaoPorData(date));
-		}
-
-		for (int i = 0; i < contas.size(); i++) {
-			try {
-				contas.get(i).setFuncionarioAbertura(
-						funcionarioRepo.findOne(contas.get(i).getFuncionarioAbertura().getId()));
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
-		mv.addObject("funcionarios", funcionarioRepo.listarFuncionariosAtivos());
-
-		mv.addObject("contas", contas);
+			mv.addObject("valortotalemcartao", pedidoRepo.valorTotalVendasEmCartaoPorData(date));			
+			pedidos = (List<Pedido>) pedidoRepo.listarPagamentosPorData(date);			
+		}		
+		
+		mv.addObject("funcionarios", funcionarioRepo.listarFuncionariosAtivos());		
+		mv.addObject("pedidos", pedidos);
+		mv.addObject("estabelecimento", estabelecimentoRepo.findOne(1));
+		mv.addObject("dataCaixa", date);
 		return mv;
 
 	}

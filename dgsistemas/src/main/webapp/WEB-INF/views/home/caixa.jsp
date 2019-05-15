@@ -173,7 +173,7 @@
 					'<tr>'+
 						'<td>${pedido.conta.id}</td>'+
 						'<td>${pedido.valorVenda}</td>'+						
-						'<c:choose><c:when test="${pedido.produto.id==1}"><td>Dinh</td></c:when><c:when test="${pedido.produto.id==2}"><td>Cartão</td></c:when></c:choose><td><fmt:formatDate value="${pedido.data}" pattern="HH:mm:ss"/></td>'+	
+						'<c:choose><c:when test="${pedido.produto.id==1}"><td>Dinh</td></c:when><c:when test="${pedido.produto.id==2}"><td>Cartão</td></c:when></c:choose><td><fmt:formatDate value="${pedido.data}" pattern="HH:mm"/></td>'+	
 						'<td>${fn:substring(pedido.conta.funcionarioAbertura.nome,0,6)}</td>'+						    
 					'</tr>'+
 				'</c:forEach>'+		    
@@ -181,6 +181,7 @@
                     '</tbody>'+                    
                     '</table>'+
                     '<br>Impresso em: '+dataAtualFormatada().substring()+' &nbsp;'+time()+
+                    '<br>Pedidos e pagamentos lançados até às 3h terão horário 23:59h.'+
                     '<center><button class=\"noprint\" onclick=\"window.print()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:140px;\">Imprimir Novamente</button><br><br>'+
 					'<button class=\"noprint\" onclick=\"window.close()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:10px;\">Fechar Impressão</button></center>'+
                     '</body>'+

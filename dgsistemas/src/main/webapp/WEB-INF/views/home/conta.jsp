@@ -141,7 +141,7 @@
 
 
 	function modalestorno(pedidoid, produtoid, qtdpedido, nomeproduto, obspedido, valorvenda){
-		if(qtdpedido>0){
+		if(valorvenda > 0 && ${funcionario.admin} == 1 && !(obspedido == 'Item Estornado')){
 			$('#textopedidoestorno').text(qtdpedido + 'x ' + nomeproduto);
 			$('#textoobspedidoestorno').text(obspedido.replace(/<br>/g, ""));		
 			$("#buttonestorno").attr("onclick","estornar()");
@@ -165,7 +165,7 @@
 			type: 'POST',
 			dataType: 'json',
 			contentType:'application/json',
-			url: "/salvarPedidos",
+			url: "/estornarpedido/"+pedidoid,
 			data:JSON.stringify(globalListaPedidos),
 			success: function(data, textStatus ){
 			console.log(data);				

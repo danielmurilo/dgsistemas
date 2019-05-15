@@ -55,7 +55,8 @@
 							  <div class="form-group">
 								  	<div class="custom-control custom-switch">
 								  		<input type="checkbox" class="custom-control-input" id="checkgerente" name="checkgerente">
-										<label class="custom-control-label" for="checkgerente">Gerente</label>										
+										<label class="custom-control-label" for="checkgerente">Gerente*</label>
+										<br>*Apenas gerentes podem fazer estornos.										
 									</div>
 								</div>
 								<div class="form-group">

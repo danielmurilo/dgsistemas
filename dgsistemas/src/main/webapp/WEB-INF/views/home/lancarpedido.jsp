@@ -177,10 +177,10 @@
 				    'COMANDA INTERNA'+				    
                     '<br>----------------------------------------------------<br></center>'+
                     dataAtualFormatada().substring()+' &nbsp;'+time()+'<span style="float:right;"> ${funcionario.nome} &nbsp </span>'+
-                    '<br><center>PEDIDO</center>'+
+                    '<br><center>PEDIDO > CONTA > <strong>${conta.id}</strong></center>'+
                     '<br>QTD &nbsp;&nbsp;&nbsp;&nbsp; ITEM <br>'+                  
                     items()+
-					'<br><h3>${conta.nome_mesa}'+
+					'<br><strong>${conta.nome_mesa}</strong>'+
 					 <c:choose>
 						<c:when test="${(conta.delivery == 1) }">
 							' (DELIVERY)'+

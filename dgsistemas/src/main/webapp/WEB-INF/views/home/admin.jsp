@@ -8,6 +8,19 @@
 
 <%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
 			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+			
+			<form action="/buscarprodutosmaisvendidos/inputCaixaDate1/inputCaixaDate2" id="formCaixa">
+			Selecione Período Produtos Mais Vendidos
+   		   	<div class="input-group mb-3">
+   		   	<div class="input-group-prepend">
+			<input style="width: 125px;" type="date" class="form-control" placeholder="Data" aria-label="Data" aria-describedby="basic-addon2" name="inputCaixaDate1" required>
+			<input style="width: 125px;" type="date" class="form-control" placeholder="Data" aria-label="Data" aria-describedby="basic-addon2" name="inputCaixaDate2" required>
+			</div>			
+			<div class="input-group-append">
+			<button class="btn btn-primary" type="submit">ok!</button>
+			</div>
+			</div>
+			</form>
           
           	<div class="table-responsive">
 					<table class="table table-striped">
@@ -44,7 +57,7 @@
 	
 	<script type="text/javascript">
 
-	//funcoes sidenavbar
+	//funcoes sidenavbar	
 	var i = 0;
 	function openNav() {
 		if(i == 0){	i = i + 1; document.getElementById("mySidenav").style.width = "250px";

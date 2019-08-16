@@ -12,7 +12,7 @@
 
 				<!-- table comeca aqui -->
 				<table class="table table-striped" id="mainTable">
-					<tbody style="text-align: center;">
+					<tbody style="text-align: center;" onload="getEstabelecimento()">
 						<tr>
 							<td colspan="1" width="50%">
 								<div class="dropdown" style="width: 100%">									
@@ -156,17 +156,54 @@
 		 document.getElementById("mySidenav").style.borderRight = "0px solid white";
 
 	}//fim funcoes sidenavbar
-		
+
+	
 	
 	var globalIdProduto;
 	var globalNomeProduto;
 	var globalprecoProduto;
-	var produtosCategoria;
+	var produtosCategoria; 
 	var globalListaPedidos = [];
 	var tablerow = -1;
-
+	
 
 	function imprimirpedido(){
+			<c:choose>
+				<c:when test="${(estabelecimento.impressoraCozinha == 1)}">
+					var text = '<CENTER><BOLD>${estabelecimento.nomefantasia}'+
+					'<BR><CENTER>COMANDA INTERNA'+
+					'<BR><LINE>'+
+					'<CENTER>'+dataAtualFormatada().substring()+' - '+time()+'   ${funcionario.nome}'+
+					'<BR><CENTER> CONTA:  <BOLD>${conta.id}'+
+					'<BR>QTD    ITEM'+
+					'<BR><LEFT>'+items()+
+					'<BR><BR><CENTER>Cliente: ${conta.nome_mesa}'
+					<c:choose>
+						<c:when test="${(conta.delivery == 1)}">
+							+'<BR><CENTER><BOLD>(DELIVERY)'
+						</c:when>
+					</c:choose>					
+					;
+					var textEncoded = encodeURI(text);
+				    window.location.href="intent://"+textEncoded+"#Intent;scheme=quickprinter;package=pe.diegoveloper.printerserverapp;end;";	
+					</c:when>
+				</c:choose>					
+			}
+
+	function items(){
+		var items = '';
+		for (i = 0; i < globalListaPedidos.length; i++) {
+			var qtd = globalListaPedidos[i].qtd;
+			if(qtd.length == 1){qtd = '0' + qtd;};
+			items = items +'<BR>'+ qtd + '  ';
+			items = items + globalListaPedidos[i].nome.substring(0, 30);
+			items = items + '<BR>     '+ globalListaPedidos[i].obs.replace(/<br>/g, ' ');
+			};
+			return items;		
+		}
+	
+
+	function imprimirpedidoold(){
 		$.get("/findestabelecimento/", function(json) { 
 			var p = window.open('', '', 'left=0,top=0,width=80mm,height=100,toolbar=0,scrollbars=0,status =0');
 		    p.document.write('<html><style>	@page { size: auto;  margin: 1mm; }</style>'+
@@ -194,7 +231,7 @@
 			});
 		}
 	
-	function items(){
+	function itemsOLD(){
 		var items = '';
 		for (i = 0; i < globalListaPedidos.length; i++) {
 			var qtd = globalListaPedidos[i].qtd;

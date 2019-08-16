@@ -240,6 +240,7 @@ public class HomeController {
 		mv.addObject("categorias", (List<Categoria>) categoriaRepo.listarCategoriasAtivas());
 		model.addAttribute("conta", contaRepo.findOne(contaid));
 		model.addAttribute("funcionario", funcionarioRepo.findOne(funcionarioid));
+		model.addAttribute("estabelecimento", estabelecimentoRepo.findOne(1));
 		return mv;
 	}
 

@@ -146,7 +146,28 @@
 				 }
 			}
 
+
 		function imprimircaixa(){
+			var text = '<BOLD>${estabelecimento.nomeFantasia}'.toUpperCase() + '<BR>'+
+			'Borderô de Caixa <fmt:formatDate value="${dataCaixa}" pattern="dd/MM/yyyy"/>'+
+			'<BR><LINE>'+
+			'<BR>RECEBIMENTOS:'+
+			'<BR>Dinheiro: R$ ${valortotalemdinheiro * -1} <BR>Cartões: R$ ${valortotalemcartao * -1} <BR><BOLD>Total: R$ ${(valortotalemdinheiro + valortotalemcartao)*-1}'+
+			'<BR>'+
+			'<BR>VALOR ;;FORMA ;;HORARIO ;;FUNCIONÁRIO <BR>'+
+			<c:forEach var="pedido" items="${pedidos}" varStatus="loop">
+				'${pedido.valorVenda} '+						
+				'<c:choose><c:when test="${pedido.produto.id==1}"> ;;Dinheiro</c:when><c:when test="${pedido.produto.id==2}"> ;;Cartão</c:when></c:choose> '+
+				' ;;<fmt:formatDate value="${pedido.data}" pattern="HH:mm"/> '+	
+				' ;;${fn:substring(pedido.conta.funcionarioAbertura.nome,0,6)}<BR>'+	    
+			</c:forEach>
+			'<CUT>';			
+			var textEncoded = encodeURI(text);
+		    window.location.href="intent://"+textEncoded+"#Intent;scheme=quickprinter;package=pe.diegoveloper.printerserverapp;end;";
+			}
+
+
+		function imprimircaixaold(){
 			var p = window.open('', '', 'left=0,top=0,width=80mm,toolbar=0,scrollbars=0,status=0');
 		    p.document.write(
 				    '<html><style>@page { size: auto;  margin: 1mm; }</style>'+

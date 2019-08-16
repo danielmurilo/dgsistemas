@@ -179,37 +179,88 @@
 		}
 
 
-
-		function imprimircontaold() {
-            //Create an ePOS-Print Builder object
-            var builder = new epson.ePOSBuilder();
-            //Create a print document
-            builder.addTextLang('en')
-            builder.addTextSmooth(true);
-            builder.addTextFont(builder.FONT_A);
-            builder.addTextSize(3, 3);
-            builder.addText('Hello,\tWorld!\n');            
-            builder.addCut(builder.CUT_FEED);
-            //Acquire the print document
-            var request = builder.toString();
-            var address = '192.168.50.1';
-            //Create an ePOS-Print object
-            var epos = new epson.ePOSPrint(address);
-            epos.onreceive = function (res) {
-            //When the printing is not successful, display a message
-            if (!res.success) {
-               alert('A print error occurred');
-               }
-            }
-            //Send the print document            
-            epos.send(request);
-            alert(builder.toString());
-        }	
-	
-
-	
-	
 	function imprimirconta(){
+		var text = '<BOLD><CENTER>${estabelecimento.nomeFantasia}'.toUpperCase()+
+		'<BR><CENTER>${estabelecimento.logradouro}, ${estabelecimento.numero}'+
+		'<BR><CENTER>${estabelecimento.bairro} - ${estabelecimento.cidade} - ${estabelecimento.uf}'+
+		'<BR><CENTER>${estabelecimento.telefone}'+
+		'<BR><CENTER>CNPJ:${estabelecimento.cnpj}'+
+		'<BR><LINE>'+
+		'<BR><CENTER>Recibo Não Fiscal'+
+		'<BR><LEFT>     QTD  ITEM         UNIT R$    TOTAL R$ '+
+		<c:forEach var="pedido" items="${pedidos}" varStatus="loop">
+		'<BR><LEFT>${pedido.qtd}  ;;${fn:substring(pedido.produto.nome, 0, 12)}'.padEnd(12, '_')+'  ;;${pedido.valorVenda}  ;;${pedido.valorVenda * pedido.qtd}'+
+		</c:forEach>
+		'<BR><BR><CENTER><BOLD>TOTAL: R$ ${conta.total}'
+		
+		
+		
+		<c:choose>
+			<c:when test="${conta.delivery > 0}">
+				+'<BR><BR><LINE>Delivery:'+
+				'<BR>Nome: ${conta.nome_mesa}'+
+				'<BR>Telefone: ${conta.telefone}'+
+				'<BR>${conta.endereco.logradouro}, ${conta.endereco.numero}'
+			
+				<c:choose>	
+					<c:when test="${conta.endereco.complemento.length()>0}">
+						+'<BR>${conta.endereco.complemento}'
+					</c:when>
+				</c:choose>
+							
+				+'<BR>${conta.endereco.bairro} - ${conta.endereco.cidade} - ${conta.endereco.uf}'
+				
+				<c:choose>
+					<c:when test="${conta.endereco.cep.length()>0}">
+						+'<BR>${conta.endereco.cep}'
+					</c:when>
+				</c:choose>
+
+				<c:choose>
+					<c:when test="${conta.endereco.referencia.length()>0}">
+					+'<BR>${conta.endereco.referencia}'
+					</c:when>
+				</c:choose>
+
+			</c:when>
+		</c:choose>
+		+'<BR><CENTER>DG Sistemas (81)99939-3017 <CUT>'		
+		;				
+	    var textEncoded = encodeURI(text);
+	    window.location.href="intent://"+textEncoded+"#Intent;scheme=quickprinter;package=pe.diegoveloper.printerserverapp;end;";
+		}
+
+		
+	
+		function imprimircontaold2(){
+			var estab = '${estabelecimento.nomeFantasia}'.toUpperCase();
+			navigator.share({text: estab +'\n'+
+				'${estabelecimento.logradouro}, ${estabelecimento.numero}\n'+
+			    '${estabelecimento.bairro} - ${estabelecimento.cidade} - ${estabelecimento.uf}\n'+
+			    '${estabelecimento.telefone}\n'+
+                '         CNPJ:${estabelecimento.cnpj}\n'+
+                '----------------------------------------------------\n'+
+                '                Recibo Não Fiscal\n'+
+                'QTD  ITEM          UNIT R$   TOTAL R$ \n'+
+                <c:forEach var="pedido" items="${pedidos}" varStatus="loop">                
+            	'  ${pedido.qtd}    '+'${fn:substring(pedido.produto.nome, 0, 12)}'.padEnd(12, '_')+'    ${pedido.valorVenda}' +
+            	<c:choose>
+				<c:when test="${(pedido.valorVenda * pedido.qtd) > 9.99}">
+					'     ${pedido.valorVenda * pedido.qtd}    \n'+
+				</c:when>
+				<c:otherwise>
+					'        ${pedido.valorVenda * pedido.qtd}    \n'+
+				</c:otherwise>
+				</c:choose>                  
+				</c:forEach>
+                ''
+				})
+	          .then(() => console.log('Successful share'),
+	           error => console.log('Error sharing:', error));
+			}
+	
+	
+	function imprimircontaold(){
 			var p = window.open('', '', 'left=0,top=0,width=80mm,toolbar=0,scrollbars=0,status=0');
 		    p.document.write(
 				    '<html><style>@page { size: auto;  margin: 1mm; }</style>'+

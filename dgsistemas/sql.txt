@@ -1,0 +1,212 @@
+heroku pg:reset -a zedohamburguer DATABASE_URL
+//apagar banco
+
+
+//acessar banco:
+heroku login
+heroku pg:psql -a zedohamburguer
+
+//acessar log
+heroku logs --tail
+
+//forçar commit vazio:
+git commit --allow-empty -m "empty commit"
+
+//upload aplicação:
+cd C:\Users\Daniel Guedes\git\dgsistemas\
+git add .
+git commit -am "msg"
+git push heroku master
+
+
+
+UPDATE produto SET preco = 3 WHERE id_produto = 16;
+
+************************************************************
+ e OBRIGATÓRIO que o banco tenha salvo:			   *
+*Produto:						   *
+*Dinheiro						   *
+*Cartão							   *
+*Taxa Embalagem' mesmo que não cobre embalagem (R$ 0.00).  *
+Categoria:						   *
+*Embalagens						   *
+************************************************************
+
+ 
+
+
+
+
+DELETE FROM pedido WHERE 1 = 1;
+DELETE FROM conta WHERE 1 = 1;
+DELETE FROM produto WHERE 1 = 1;
+DELETE FROM funcionario WHERE 1 = 1;
+
+INSERT INTO estabelecimento (id, nome_fantasia, razao_social, cnpj, telefone, endereco_impressora_cozinha, endereco_impressora_caixa, fisco, fisco2, logradouro, numero, bairro, cidade, uf, cep, delivery, impressora_cozinha, impressora_caixa) VALUES (1, 'Ze do Hamburguer', 'Ze do Hamburguer LTDA', '00.000.000/0001-00', '(81)99775-2839', '192.168.0.001', '192.168.0.002','/','//', 'Rua Sylo Bittencourt', '55', 'Boa Viagem', 'Recife', 'PE', '51.030-080', 0, 0, 0);
+
+INSERT INTO funcionario (id_funcionario, login, nome, senha, telefone, admin, role, status) VALUES (1,'berg', 'Berg', 'berg', '(81)99775-2839', '1', 'ADMIN', '1');
+INSERT INTO funcionario (id_funcionario, login, nome, senha, telefone, admin, role, status) VALUES (2,'garcom1', 'Garcom1', 'garcom1', '(81)', '0', 'GARCOM', '1');
+INSERT INTO funcionario (id_funcionario, login, nome, senha, telefone, admin, role, status) VALUES (3,'garcom2', 'Garcom2', 'garcom2', '(81)', '0', 'GARCOM', '1');
+INSERT INTO funcionario (id_funcionario, login, nome, senha, telefone, admin, role, status) VALUES (4,'admin', 'Daniel Guedes', 'arm050', '(81)99939-3017', '1', 'ADMIN', '1');
+INSERT INTO funcionario (id_funcionario, login, nome, senha, telefone, admin, role, status) VALUES (5,'kelly', 'Kelly', 'kelly', '(81)', '0', 'GARCOM', '1');
+
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('1', 'Entradas', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('2', 'Bebidas', '1', '0');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('3', 'Classicos', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('4', 'Combo Classicos', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('5', 'Smash', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('6', 'Smash 2X', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('7', 'Alto', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('8', 'Turbine', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('9', 'Sobremesas', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('10', 'Promocoes ter e qua', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('11', 'Promocoes qui e sex', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('12', 'Promocao sab', '1', '1');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('13', 'Embalagem', '1', '0');
+INSERT INTO categoria (id_categoria, nome, status, cobra_embalagem) VALUES ('14', 'Delivery', '1', '0');
+
+
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('1', 'Dinheiro', 'Dinheiro', '0', '1', NULL);
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('2', 'Cartao', 'Cartao', '0', '1', NULL);
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('10', 'Mini Coxinha 4 unid', 'Mini Coxinha', '8', '1', '1');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('11', 'Palito de Mussarela', 'Palito de Mussarela', '12', '1', '1');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('12', 'NY Fries', 'NY Fries', '15', '1', '1');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('13', 'Fritas', 'Fritas', '6', '1', '1');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('14', 'Fritas Grande', 'Fritas Grande', '10', '1', '1');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('15', 'Nuggets', 'Nuggets', '6.50', '1', '1');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('16', 'Agua', 'Agua', '2.00', '1', '2');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('17', 'Agua com gas', 'Agua com gas', '3', '1', '2');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('18', 'H2O', 'H2O', '5.5', '1', '2');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('19', '1L Refrig.', '1L Refrig.', '8', '1', '2');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('20', 'Refrig. Lata', 'Refrig. Lata', '4.50', '1', '2');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('21', 'Refrig. Mini Lata', 'Refrig. Mini Lata', '2.50', '1', '2');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('22', 'Suco', 'Suco', '4.00', '1', '2');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('23', 'Suco Laranja', 'Suco Laranja', '6', '1', '2');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('24', '300ml Milk Shake', '300ml Milk Shake', '8', '1', '2');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('25', '500ml Milk Shake', '500ml Milk Shake', '10', '1', '2');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('26', 'descricao', 'Cheese File Especial', '16.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('27', 'descricao', 'Cheese File Bacon', '14.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('28', 'descricao', 'Cheese Picanha', '15.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('29', 'descricao', 'Sertanejo', '13.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('30', 'descricao', 'Ze Burguer', '12.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('31', 'descricao', 'Ze Burguer Especial', '13.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('32', 'descricao', 'Chicken File', '12.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('33', 'descricao', 'Chicken Crock', '9.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('34', 'descricao', 'Cheese Pernil Suino', '12.50', '1', '3');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('35', 'Cheese Coracao', 'Cheese Coracao', '13.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('36', 'Duplo Cheese Burguer', 'Duplo Cheese Burguer', '12.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('37', 'Cheese Egg Bacon', 'Cheese Egg Bacon', '11.50', 1, '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('38', 'Cheese Bacon', 'Cheese Bacon', '10.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('39', 'Cheese Egg', 'Cheese Egg', '9.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('40', 'Cheddar Burguer', 'Cheddar Buerguer', '8.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('41', 'Cheese Burguer', 'Cheese Burguer', '8.50', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('42', 'Americano', 'Americano', '7', '1', '3');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('43', 'Misto', 'Misto', '9.9', '1', '3');
+
+
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('44', 'descricao', 'Combo Cheese File Especial', '24', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('45', 'descricao', 'Combo Cheese File Bacon', '22', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('46', 'descricao', 'Combo Cheese Picanha', '23', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('47', 'descricao', 'Combo Sertanejo', '21.50', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('48', 'descricao', 'Combo Ze Burguer', '20.50', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('49', 'descricao', 'Combo Ze Burguer Especial', '21.50', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('50', 'descricao', 'Combo Chicken File', '20.50', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('51', 'descricao', 'Combo Chicken Crock', '18.50', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('52', 'descricao', 'Combo Cheese Pernil Suino', '20.50', '1', '4');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('53', 'Cheese Coracao', 'Combo Cheese Coracao', '21.50', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('54', 'Duplo Cheese Burguer', 'Combo Duplo Cheese Burguer', '20.50', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('55', 'Cheese Egg Bacon', 'Combo Cheese Egg Bacon', '19.50', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('56', 'Cheese Bacon', 'Combo Cheese Bacon', '18.50', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('57', 'Cheddar Buerguer', 'Combo Cheese Egg', '18', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('58', 'Cheese Burguer', 'Combo Cheddar Burguer', '17', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('59', 'Cheese Burguer', 'Combo Cheese Burguer', '17', '1', '4');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('60', 'Americano', 'Combo Americano', '15.50', '1', '4');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('61', 'Insano', 'Insano', '13.50', '1', '5');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('62', 'BlackBull', 'BlackBull', '12.50', '1', '5');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('63', 'Originals', 'Originals', '12.50', '1', '5');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('64', 'Classico', 'Classico', '12.50', '1', 5);
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('65', 'Texas', 'Texas', '12.50', '1', '5');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('66', 'Insano', 'Insano', '16.50', '1', '6');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('67', 'BlackBull', 'BlackBull', '15.50', '1', '6');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('68', 'Originals', 'Originals', '15.50', '1', '6');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('69', 'Classico', 'Classico', '15.50', '1', '6');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('70', 'Texas', 'Texas', '15.50', '1', '6');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('71', 'descricao', 'King Angus', '16.50', '1', '7');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('72', 'descricao', 'Angus Especial', '16.50', '1', '7');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('73', 'descricao', 'Angus Pepperoni', '16.50', '1', '7');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('74', 'descricao', 'King Onion', '16.50', '1', '7');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('75', 'descricao', 'Prensadao', '16.50', '1', '7');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('76', 'descricao', 'Cebola Caramelizada', '2', '1', '8');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('77', 'descricao', 'Queijo Duplo', '2.5', '1', '8');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('78', 'descricao', 'Bacon', '2.5', '1', '8');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('79', 'descricao', 'Cheddar Cremoso', '2', '1', '8');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('80', 'descricao', 'Ovo', '1', '1', '8');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('81', 'descricao', 'Torta Chocolate', '7', '1', '9');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('82', 'descricao', 'Torta Bem Casado', '7', '1', '9');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('83', 'descricao', 'Torta Ninho', '8', '1', '9');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('85', 'promoção', '2x Ze Burguer', '10', '1', '10');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('86', 'promoção', '2x X Egg Bacon', '10', '1', '10');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('87', 'promoção', '2x Duplo X', '10', '1', '10');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('88', 'promoção', '2x Ze Burguer Especial', '11.5', '1', '10');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('89', 'promoção', '3x Ze Burguer', '10', '1', '10');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('90', 'promoção', '3x X Egg Bacon', '10', '1', '10');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('91', 'promoção', '3x Duplo X', '10', '1', '10');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('92', 'promoção', '3x Ze Burguer Especial', '11.50', '1', '10');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('93', 'promoção', '2x Ze Burguer', '10', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('94', 'promoção', '2x X Egg Bacon', '10', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('95', 'promoção', '2x Duplo X', '10', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('96', 'promoção', '2x Ze Burguer Especial', '11.5', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('97', 'promoção', '2x X Picanha', '11.5', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('98', 'promoção', '2x King Angus', '12.5', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('99', 'promoção', '2x Angus Especial', '12.5', '1', '11');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('100', 'promoção', '3x Ze Burguer', '10', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('101', 'promoção', '3x X Egg Bacon', '10', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('102', 'promoção', '3x Duplo X', '10', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('103', 'promoção', '3x Ze Burguer Especial', '11.50', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('104', 'promoção', '3x X Picanha', '11.50', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('105', 'promoção', '3x King Angus', '12.5', '1', '11');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('106', 'promoção', '3x Angus Especial', '12.5', '1', '11');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('107', 'promoção', '2x King Angus', '13', '1', '12');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('108', 'promoção', '2x Angus Especial', '13', '1', '12');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('109', 'promoção', '2x X File', '13', '1', '12');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('201', 'Embalagem', 'Taxa Embalagem', '1', '1', '13');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('202', 'Embalagem', 'Taxa Embalagem', '2', '1', '13');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('203', 'Embalagem', 'Taxa Embalagem', '3', '1', '13');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('204', 'Embalagem', 'Taxa Embalagem', '4', '1', '13');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('205', 'Embalagem', 'Taxa Embalagem', '5', '1', '13');
+
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('301', 'Delivery', 'Taxa Delivery', '1', '1', '14');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('302', 'Delivery', 'Taxa Delivery', '2', '1', '14');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('303', 'Delivery', 'Taxa Delivery', '3', '1', '14');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('304', 'Delivery', 'Taxa Delivery', '4', '1', '14');
+INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('305', 'Delivery', 'Taxa Delivery', '5', '1', '14');
+
+
+
+
+
+
+
+// INSERT INTO produto (id_produto, descricao, nome, preco, status, categoria_id) VALUES ('cod', 'descricao', 'nome', 'valor', '1', 'cat');
+
+
+
+
+

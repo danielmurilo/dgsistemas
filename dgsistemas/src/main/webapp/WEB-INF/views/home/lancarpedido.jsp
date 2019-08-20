@@ -90,6 +90,10 @@
 					</tbody>
 				</table>
 				
+				<div id="alert" class="alert alert-success" role="alert">
+				  Pedido Lançado Com Sucesso!!!
+				</div>
+				
 				<!--fechando divs header -->
 			</div>
 		</div>
@@ -140,6 +144,12 @@
 
 
 	<script type="text/javascript">
+
+	$( document ).ready(function() {
+		$('#alert').hide();
+	});
+
+	
 	//funcoes sidenavbar
 	var i = 0;
 	function openNav() {
@@ -170,7 +180,7 @@
 	function imprimirpedido(){
 			<c:choose>
 				<c:when test="${(estabelecimento.impressoraCozinha == 1)}">
-					var text = '<CENTER><BOLD>${estabelecimento.nomefantasia}'+
+					var text = '<CENTER><BOLD>${estabelecimento.nomeFantasia}'+
 					'<BR><CENTER>COMANDA INTERNA'+
 					'<BR><LINE>'+
 					'<CENTER>'+dataAtualFormatada().substring()+' - '+time()+'   ${funcionario.nome}'+
@@ -187,7 +197,10 @@
 					var textEncoded = encodeURI(text);
 				    window.location.href="intent://"+textEncoded+"#Intent;scheme=quickprinter;package=pe.diegoveloper.printerserverapp;end;";	
 					</c:when>
-				</c:choose>					
+				</c:choose>
+				$('#alert').show();
+				setInterval(function(){ window.location='/conta/${conta.id}'; }, 1500);
+									
 			}
 
 	function items(){

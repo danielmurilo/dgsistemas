@@ -54,7 +54,7 @@
       <div class="modal-body">
         Total R&#36; ${conta.total} <br>
         <div class="form-group">
-		    <label for="valorInput">Insira Valor:</label>
+		    <label for="valorInput" id="labelinsiravalor">Insira Valor:</label>
 		    <input type="number" class="form-control" id="valorInput" name="valorInput">
 		    <label id="labeltroco"></label>
 	  </div>
@@ -63,8 +63,8 @@
       <!-- Modal footer -->
       <div class="modal-footer">
         <div class="btn-group btn-group-justified" style="width: 100%">
-			<a class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" onclick="dinheiro(${conta.total})">Dinheiro</a>
-			<a class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" onclick="cartao(${conta.total})">Cartão</a>
+			<a id="din" class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" onclick="dinheiro(${conta.total})">Dinheiro</a>
+			<a id="cartao" class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" onclick="cartao(${conta.total})">Cartão</a>
 			<a class="btn btn-default btn-primary" style="color: white;" onclick="fecharconta(${conta.total})">Encerrar Conta</a>
 		</div>
       </div>
@@ -117,10 +117,20 @@
 	<script type="text/javascript">	
 	//funcoes sidenavbar
 	$(window).on('load',function(){
+		if('${conta.total}' == 0.0){
+			$("#labeltroco").empty();
+			$("#labeltroco").append("Deseja encerrar conta?");
+			$('#din').hide();
+			$('#cartao').hide();
+			$('#labelinsiravalor').hide();			
+			$('#valorInput').hide();
+			
+			
+			}
+		
 		if('${conta.total}' == 0.0 && '${fn:length(pedidos)}' > 0){
-				$("#labeltroco").empty();
-				$("#labeltroco").append("Deseja encerrar conta?");
-				$('#myModal').modal('show');				
+				$('#myModal').modal('show');
+							
 			}        
     });
 	
@@ -227,7 +237,16 @@
 		+'<BR><CENTER>DG Sistemas (81)99939-3017 <CUT>'		
 		;				
 	    var textEncoded = encodeURI(text);
-	    window.location.href="intent://"+textEncoded+"#Intent;scheme=quickprinter;package=pe.diegoveloper.printerserverapp;end;";
+	    //var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);	     
+	    //alert(navigator.appVersion);
+	    
+	    if(navigator.appVersion=='webview'){
+	    	//window.location.href="quickprinter://"+textEncoded;
+	    	window.location.href="intent://"+textEncoded+"#Intent;scheme=quickprinter;package=pe.diegoveloper.printerserverapp;end;";
+		    }else{
+		    	window.location.href="intent://"+textEncoded+"#Intent;scheme=quickprinter;package=pe.diegoveloper.printerserverapp;end;";
+			    }
+	    
 		}
 
 		

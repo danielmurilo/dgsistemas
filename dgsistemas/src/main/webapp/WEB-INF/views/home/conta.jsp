@@ -8,6 +8,8 @@
 
 <%Integer funcionarioid = (Integer) session.getAttribute("funcionarioid");
 			if (funcionarioid.equals(0)||funcionarioid==null) {out.print("login necessário");response.sendRedirect("/");} else {}%>
+			
+	<c:set var="total"><fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${conta.total}" /></c:set>
 
 	<table id="tableContas" class="table table-striped table-wrapper-scroll-y">
 		<thead>
@@ -52,7 +54,8 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        Total R&#36; ${conta.total} <br>
+      
+        <p>Total R$ ${total}</p>
         <div class="form-group">
 		    <label for="valorInput" id="labelinsiravalor">Insira Valor:</label>
 		    <input type="number" class="form-control" id="valorInput" name="valorInput">
@@ -63,9 +66,9 @@
       <!-- Modal footer -->
       <div class="modal-footer">
         <div class="btn-group btn-group-justified" style="width: 100%">
-			<a id="din" class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" onclick="dinheiro(${conta.total})">Dinheiro</a>
-			<a id="cartao" class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" onclick="cartao(${conta.total})">Cartão</a>
-			<a class="btn btn-default btn-primary" style="color: white;" onclick="fecharconta(${conta.total})">Encerrar Conta</a>
+			<a id="din" class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" onclick="dinheiro(${total})" >Dinheiro</a>
+			<a id="cartao" class="btn btn-default btn-primary" style="color: white; border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" onclick="cartao(${total})">Cartão</a>
+			<a id="fecharconta" class="btn btn-default btn-primary" style="color: white;" onclick="fecharconta(${total})" >Encerrar Conta</a>
 		</div>
       </div>
 
@@ -87,8 +90,10 @@
       <div class="modal-body">
         <p id="textopedidoestorno"></p>
         <p id="textoobspedidoestorno"></p>
+        <label for="senhagerente" id="labelsenhagerente">Senha Gerente:</label>
+        <input type="password" class="form-control" id="senhagerente" name="valorInput">
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer">      
         <button id="buttonestorno" onclick="" type="button" class="btn btn-primary">Estornar</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
         <br>
@@ -108,7 +113,7 @@
 		<a style="border-right-color: white; border-right-style: solid; border-right-width: 3px;" class="btn btn-default btn-primary" onclick="imprimirconta()" target="_self"><i style="color: white" class="material-icons">print</i></a>
 		<a class="btn btn-default btn-primary" style="color: white" href="/lancarpedido" target="_self">Pedido</a>
 	</div>
-		<p style="margin-top: 2px; margin-bottom: 1px">${conta.nome_mesa}<br>Total R&#36; ${conta.total}</p>
+		<p style="margin-top: 2px; margin-bottom: 1px">${conta.nome_mesa}<br>Total R$ ${total}</p>
 		</footer>
 	
 	
@@ -117,7 +122,8 @@
 	<script type="text/javascript">	
 	//funcoes sidenavbar
 	$(window).on('load',function(){
-		if('${conta.total}' == 0.0){
+		var total = parseFloat('${total}'.replace(",", "."));
+		if (total * 100 == 0 * 100){
 			$("#labeltroco").empty();
 			$("#labeltroco").append("Deseja encerrar conta?");
 			$('#din').hide();
@@ -128,9 +134,8 @@
 			
 			}
 		
-		if('${conta.total}' == 0.0 && '${fn:length(pedidos)}' > 0){
-				$('#myModal').modal('show');
-							
+		if(total * 100 == 0 * 100 && '${fn:length(pedidos)}' > 0){
+				$('#myModal').modal('show');							
 			}        
     });
 	
@@ -151,42 +156,60 @@
 
 
 	function modalestorno(pedidoid, produtoid, qtdpedido, nomeproduto, obspedido, valorvenda){
-		if(valorvenda > 0 && ${funcionario.admin} == 1 && !(obspedido == 'Item Estornado')){
+		if(valorvenda > 0  && !(obspedido == 'Item Estornado')){
 			$('#textopedidoestorno').text(qtdpedido + 'x ' + nomeproduto);
 			$('#textoobspedidoestorno').text(obspedido.replace(/<br>/g, ""));		
 			$("#buttonestorno").attr("onclick","estornar()");
 			$("#buttonconfirmarestorno").attr("onclick","confirmarestorno("+pedidoid+", "+qtdpedido+", "+produtoid+", '"+nomeproduto+"', "+valorvenda+")");
 			$('#buttonconfirmarestorno').hide();
+			$('#senhagerente').hide();
+			$('#labelsenhagerente').hide();
 			$('#modalestorno').modal('show');
 			}
 		
 		}
 
 	function estornar(){
+		$('#labelsenhagerente').show();
+			$('#senhagerente').show();
 			$('#buttonconfirmarestorno').show();
 		}
 
 	function confirmarestorno(pedidoid, qtdpedido, produtoid, nomeproduto, valorvendaa){
 		var globalListaPedidos = [];
-		var pedido = {id:produtoid, nome:nomeproduto, qtd:qtdpedido*-1, obs:'Item Estornado', valorvenda:valorvendaa};
+		var pedido = {id:produtoid, nome:nomeproduto, qtd:qtdpedido*-1, obs:'Item Estornado', valorvenda:valorvendaa};		
 		globalListaPedidos.push(pedido);
-		
-		$.ajax({
-			type: 'POST',
-			dataType: 'json',
-			contentType:'application/json',
-			url: "/estornarpedido/"+pedidoid,
-			data:JSON.stringify(globalListaPedidos),
-			success: function(data, textStatus ){
-			console.log(data);				
-			},
-			error: function(xhr, textStatus, errorThrown){
-			//alert('request failed'+errorThrown);
-			}
+
+		var log;
+		$.get( "/logarGerente/"+$("#senhagerente").val(), function( data ) {
+			if(parseFloat(data) > 0){
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					contentType:'application/json',
+					url: "/estornarpedido/"+pedidoid,
+					data:JSON.stringify(globalListaPedidos),
+					success: function(data, textStatus ){
+											
+					},
+					error: function(xhr, textStatus, errorThrown){
+					//alert('request failed'+errorThrown);
+					}
+					});
+				}else{
+						alert('senha incorreta!!!');
+					}
+			  			  
 			});
-		
 		setTimeout(function(){location.reload();}, 500);
 		}
+
+		
+		
+		
+		
+		
+		
 
 
 	function imprimirconta(){
@@ -201,7 +224,7 @@
 		<c:forEach var="pedido" items="${pedidos}" varStatus="loop">
 		'<BR><LEFT>${pedido.qtd}  ;;${fn:substring(pedido.produto.nome, 0, 12)}'.padEnd(12, '_')+'  ;;${pedido.valorVenda}  ;;${pedido.valorVenda * pedido.qtd}'+
 		</c:forEach>
-		'<BR><BR><CENTER><BOLD>TOTAL: R$ ${conta.total}'
+		'<BR><BR><CENTER><BOLD>TOTAL: R$ ${total}'
 		
 		
 		
@@ -251,95 +274,9 @@
 
 		
 	
-		function imprimircontaold2(){
-			var estab = '${estabelecimento.nomeFantasia}'.toUpperCase();
-			navigator.share({text: estab +'\n'+
-				'${estabelecimento.logradouro}, ${estabelecimento.numero}\n'+
-			    '${estabelecimento.bairro} - ${estabelecimento.cidade} - ${estabelecimento.uf}\n'+
-			    '${estabelecimento.telefone}\n'+
-                '         CNPJ:${estabelecimento.cnpj}\n'+
-                '----------------------------------------------------\n'+
-                '                Recibo Não Fiscal\n'+
-                'QTD  ITEM          UNIT R$   TOTAL R$ \n'+
-                <c:forEach var="pedido" items="${pedidos}" varStatus="loop">                
-            	'  ${pedido.qtd}    '+'${fn:substring(pedido.produto.nome, 0, 12)}'.padEnd(12, '_')+'    ${pedido.valorVenda}' +
-            	<c:choose>
-				<c:when test="${(pedido.valorVenda * pedido.qtd) > 9.99}">
-					'     ${pedido.valorVenda * pedido.qtd}    \n'+
-				</c:when>
-				<c:otherwise>
-					'        ${pedido.valorVenda * pedido.qtd}    \n'+
-				</c:otherwise>
-				</c:choose>                  
-				</c:forEach>
-                ''
-				})
-	          .then(() => console.log('Successful share'),
-	           error => console.log('Error sharing:', error));
-			}
+		
 	
 	
-	function imprimircontaold(){
-			var p = window.open('', '', 'left=0,top=0,width=80mm,toolbar=0,scrollbars=0,status=0');
-		    p.document.write(
-				    '<html><style>@page { size: auto;  margin: 1mm; }</style>'+
-				    '<style>@media print{.noprint{display:none;}}</style>'+
-				    '<body onload=\"window.print();\">'+
-				    '<section class="sheet">'+
-				    '<center>'+
-				    '${estabelecimento.nomeFantasia}'.toUpperCase() + '<br>'+
-				    '${estabelecimento.logradouro}, ${estabelecimento.numero}<br>'+
-				    '${estabelecimento.bairro} - ${estabelecimento.cidade} - ${estabelecimento.uf}<br>'+
-				    '${estabelecimento.telefone}<br>'+
-                    '</center><br>'+
-                    '<strong>CNPJ:${estabelecimento.cnpj}</strong>'+
-                    '<br>----------------------------------------------------<br>'+
-                     dataAtualFormatada().substring()+' &nbsp;'+time()+ '<span style="float:right;"><strong>COO: ${conta.id} &nbsp </strong> </span>'+
-                    '<center>Recibo Não Fiscal</center>'+
-                    '<br>QTD &nbsp;&nbsp;&nbsp; ITEM &nbsp;&nbsp;&nbsp; UNIT R$ &nbsp;&nbsp;&nbsp; TOTAL R$ <br>'+
-                    <c:forEach var="pedido" items="${pedidos}" varStatus="loop">
-                    '<p style="text-align: left;">&nbsp;&nbsp; ${pedido.qtd} &nbsp;&nbsp;'+
-                    '${fn:substring(pedido.produto.nome, 0, 12)}'+
-                    '<span style="float:right;"> ${pedido.valorVenda}'+
-                    <c:choose>
-						<c:when test="${(pedido.valorVenda * pedido.qtd) > 9.99}">
-							'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${pedido.valorVenda * pedido.qtd} &nbsp;&nbsp;&nbsp;&nbsp;</span></p>'+
-						</c:when>
-						<c:otherwise>
-							'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${pedido.valorVenda * pedido.qtd} &nbsp;&nbsp;&nbsp;&nbsp;</span></p>'+
-						</c:otherwise>
-					</c:choose>                  
-    				</c:forEach>
-    				'<span style="float:right;">--------------------------</span><br>'+
-    				'<span style="float:right;">Total: ${conta.total} &nbsp;&nbsp;&nbsp;&nbsp;</span>'+
-    				<c:choose>
-						<c:when test="${conta.delivery > 0}">
-						'<br><br>----------------------------------------Delivery<br>'+
-						'Nome: ${conta.nome_mesa}<br>'+
-						'Telefone: ${conta.telefone}<br>'+
-						'${conta.endereco.logradouro}, ${conta.endereco.numero}<br>'+
-						<c:choose>
-							<c:when test="${conta.endereco.complemento.length()>0}">
-							'${conta.endereco.complemento} <br>'+
-							</c:when>
-						</c:choose>	
-						'${conta.endereco.bairro} - ${conta.endereco.cidade} - ${conta.endereco.uf} &nbsp; <br>'+
-						<c:choose>
-							<c:when test="${conta.endereco.cep.length()>0}">
-							'${conta.endereco.cep} <br>'+
-							</c:when>
-					</c:choose>	
-						'${conta.endereco.referencia}'+
-						</c:when>					
-					</c:choose>
-					'<br><br><center><p style="font-size: 10">DG Sistemas (81)99939-3017</p><center>'+					
-					'</section><br>'+
-					'<center><button class=\"noprint\" onclick=\"window.print()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:140px;\">Imprimir Novamente</button><br><br>'+
-					'<button class=\"noprint\" onclick=\"window.close()\" style=\"font-size : 50px; width: 100%; height:120px; bottom:10px;\">Fechar Impressão</button></center>'+
-                    '</body></html>');
-		    p.document.close();
-		}
-
 	
 	
 	function time() {
@@ -367,9 +304,10 @@
 function limparmodal(){$("#valorInput").val('');$("#labeltroco").empty();}
 	
 
-	function dinheiro(total){
+	function dinheiro(){
+		var total = parseFloat('${total}'.replace(",", "."));
 		/* $.get('/checkconnectionn').then(function(result){alert(result);},function (jqXHR,textStatus,errorThrown ){alert('jqXHR: '+ jqXHR + 'textStatus: '+textStatus+' errorThrown: '+errorThrown);}); */
-				
+
 				if($("#valorInput").val() == ''){
 					$("#labeltroco").empty();
 					$("#labeltroco").append("Valor não informado!");
@@ -384,12 +322,20 @@ function limparmodal(){$("#valorInput").val('');$("#labeltroco").empty();}
 							setTimeout(function(){location.reload();}, 300);
 						}						
 						 if( valorInput > total){
-									var troco = valorInput - total;
+									var troco = parseFloat(valorInput.toFixed(2)) - parseFloat(total.toFixed(2));
+									$("#labelinsiravalor").empty();
+									$("#labelinsiravalor").append('Valor Pago: R$ '+valorInput);									
 									$("#labeltroco").empty();
-									$("#labeltroco").append('Troco R$' +troco+ ' <br><a class="btn btn-default btn-primary" onclick="refresh()"> Atualizar Conta.</a>');
+									$("#labeltroco").css("font-size", "20px");
+									$("#labeltroco").append('Troco R$' +troco+ ' <br> <a class="btn btn-default btn-primary" style="color: white" onclick="refresh()" target="_self"> Atualizar Conta</a>');
+									$('#din').hide();
+									$('#cartao').hide();
+									$('#fecharconta').hide();
+									
 									$("#alert").show();
 									$("#alert").empty();
-									$("#alert").append('Troco R$' +troco);
+									$("#alert").append('Troco R$ '+troco);
+									//$("#valorInput").remove();
 									$.post( "/lancardinheiro/"+total.toFixed(2)+0.01);
 									}									
 						

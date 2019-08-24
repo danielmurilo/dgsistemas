@@ -14,7 +14,11 @@ public interface FuncionarioRepo extends CrudRepository<Funcionario, Integer> {
 	@Query(value = "SELECT * FROM funcionario f WHERE f.login = :login and f.senha = :password ", nativeQuery = true)
 	public Funcionario doLogin(@Param("login") String login, @Param("password") String password);
 	
-	@Query(value = "select * FROM funcionario f WHERE f.status = 1 ", nativeQuery = true)
+	@Query(value = "SELECT * FROM funcionario f WHERE f.status = 1 ", nativeQuery = true)
 	public List<Funcionario> listarFuncionariosAtivos();
+	
+	@Query(value = "SELECT count(f.id_funcionario) FROM funcionario f WHERE f.senha = :senha", nativeQuery = true)
+	public int logarGerente(@Param("senha") String senha);
+	
 
 }

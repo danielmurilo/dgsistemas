@@ -28,7 +28,7 @@
 					</c:choose>                  
     				</c:forEach>
     				'<span style="float:right;">--------------------------</span><br>'+
-    				'<span style="float:right;">Total: ${conta.total} &nbsp;&nbsp;&nbsp;&nbsp;</span>'+
+    				'<span style="float:right;">Total: <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${conta.total} &nbsp;&nbsp;&nbsp;&nbsp;</span>'+
     				<c:choose>
 						<c:when test="${conta.delivery > 0}">
 						'<br><br>----------------------------------------Delivery<br>'+

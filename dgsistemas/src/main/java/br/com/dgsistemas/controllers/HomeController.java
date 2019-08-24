@@ -462,6 +462,20 @@ public class HomeController {
 		}
 
 	}
+	
+	@RequestMapping(value = "/logarGerente/{senha}")
+	public void logarGerente(@PathVariable("senha") String senha, HttpServletResponse response) {
+		String json = new Gson().toJson(funcionarioRepo.logarGerente(senha));
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		try {
+			response.getWriter().write(json);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+
+	}
 
 	@GetMapping("/cadastros")
 	public ModelAndView cadastros(@ModelAttribute("funcionarioid") int funcionarioid) {

@@ -25,7 +25,7 @@
 								<tr onclick="window.location='/conta/${conta.id}';">
 									<th scope="row">${conta.id}</th>
 									<td>${conta.nome_mesa}</td>
-									<td>${conta.total}</td>
+									<td><fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${conta.total}" /></td>
 									<td><c:choose>
 										<c:when test="${conta.delivery == 1}"><i class="material-icons">motorcycle</i></c:when>
 										<c:otherwise></c:otherwise>

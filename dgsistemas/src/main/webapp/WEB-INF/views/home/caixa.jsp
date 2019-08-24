@@ -152,7 +152,7 @@
 			'Borderô de Caixa <fmt:formatDate value="${dataCaixa}" pattern="dd/MM/yyyy"/>'+
 			'<BR><LINE>'+
 			'<BR>RECEBIMENTOS:'+
-			'<BR>Dinheiro: R$ ${valortotalemdinheiro * -1} <BR>Cartões: R$ ${valortotalemcartao * -1} <BR><BOLD>Total: R$ ${(valortotalemdinheiro + valortotalemcartao)*-1}'+
+			'<BR>Dinheiro: R$ <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${valortotalemdinheiro * -1}" /> <BR>Cartões: R$ <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${valortotalemcartao * -1}" /> <BR><BOLD>Total: R$ <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${(valortotalemdinheiro + valortotalemcartao)*-1}" />'+
 			'<BR>'+
 			'<BR>VALOR ;;FORMA ;;HORARIO ;;FUNCIONÁRIO <BR>'+
 			<c:forEach var="pedido" items="${pedidos}" varStatus="loop">

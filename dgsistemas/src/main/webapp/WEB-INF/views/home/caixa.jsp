@@ -44,9 +44,9 @@
 				</tr>
 			<tr><td colspan="4">Recebimentos:</td></tr>
 		    <tr>			
-			<td>Dinheiro: <br>R$ ${valortotalemdinheiro * -1}</td>			
-		    <td>Cartão: <br>R$ ${valortotalemcartao * -1}</td>
-		    <td>Total: <br>R$ ${(valortotalemdinheiro + valortotalemcartao)*-1}</td>
+			<td>Dinheiro: <br>R$ <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${valortotalemdinheiro * -1}" /></td>			
+		    <td>Cartão: <br>R$ <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${valortotalemcartao * -1}" /></td>
+		    <td>Total: <br>R$ <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${(valortotalemdinheiro + valortotalemcartao)*-1}" /></td>
 		    <td><a id="printButton" class="btn btn-default btn-primary" onclick="imprimircaixa()"><i style="color: white" class="material-icons">print</i></a></td>
 		    </tr>
 		      </tbody>

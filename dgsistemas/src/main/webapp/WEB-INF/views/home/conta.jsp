@@ -170,9 +170,10 @@
 		}
 
 	function estornar(){
+		$('#buttonestorno').hide();
 		$('#labelsenhagerente').show();
-			$('#senhagerente').show();
-			$('#buttonconfirmarestorno').show();
+		$('#senhagerente').show();
+		$('#buttonconfirmarestorno').show();
 		}
 
 	function confirmarestorno(pedidoid, qtdpedido, produtoid, nomeproduto, valorvendaa){

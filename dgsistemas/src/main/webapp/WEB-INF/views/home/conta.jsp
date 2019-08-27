@@ -24,10 +24,10 @@
 		</thead>
 		<tbody>
 			<c:forEach var="pedido" items="${pedidos}" varStatus="loop">
-				<tr onclick="modalestorno(${pedido.id}, ${pedido.produto.id}, ${pedido.qtd}, '${pedido.produto.nome}', '${pedido.obs}', '${pedido.valorVenda}')">
+				<tr onclick="modalestorno(${pedido.id}, ${pedido.produto.id}, ${pedido.qtd}, '${pedido.produto.nome}', '${pedido.valorVenda}')">
 					<td>${pedido.qtd}</td>
 					<td>${pedido.produto.nome}<br> ${pedido.obs}</td>					
-					<td>${pedido.valorVenda * pedido.qtd}</td>
+					<td><fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${pedido.valorVenda * pedido.qtd}" /></td>
 				</tr>
 			</c:forEach>
 			<tr><td colspan="3">
@@ -89,7 +89,6 @@
       </div>
       <div class="modal-body">
         <p id="textopedidoestorno"></p>
-        <p id="textoobspedidoestorno"></p>
         <label for="senhagerente" id="labelsenhagerente">Senha Gerente:</label>
         <input type="password" class="form-control" id="senhagerente" name="valorInput">
       </div>
@@ -121,6 +120,7 @@
 	<script type="text/javascript" src="../../../img/xxx.js"></script>
 	<script type="text/javascript">	
 	//funcoes sidenavbar
+	var printTroco = '';
 	$(window).on('load',function(){
 		var total = parseFloat('${total}'.replace(",", "."));
 		if (total * 100 == 0 * 100){
@@ -155,10 +155,9 @@
 	}//fim funcoes sidenavbar
 
 
-	function modalestorno(pedidoid, produtoid, qtdpedido, nomeproduto, obspedido, valorvenda){
-		if(valorvenda > 0  && !(obspedido == 'Item Estornado')){
-			$('#textopedidoestorno').text(qtdpedido + 'x ' + nomeproduto);
-			$('#textoobspedidoestorno').text(obspedido.replace(/<br>/g, ""));		
+	function modalestorno(pedidoid, produtoid, qtdpedido, nomeproduto, valorvenda){
+		if(valorvenda > 0 ){
+			$('#textopedidoestorno').text(qtdpedido + 'x ' + nomeproduto);		
 			$("#buttonestorno").attr("onclick","estornar()");
 			$("#buttonconfirmarestorno").attr("onclick","confirmarestorno("+pedidoid+", "+qtdpedido+", "+produtoid+", '"+nomeproduto+"', "+valorvenda+")");
 			$('#buttonconfirmarestorno').hide();
@@ -274,8 +273,61 @@
 		}
 
 		
+
+	function imprimirinvoice(){
+		var total = parseFloat('${total}'.replace(",", "."));
+		<c:choose>
+			<c:when test="${(estabelecimento.impressoraCaixa == 1)}">
+				var text = '<BOLD><CENTER>${estabelecimento.nomeFantasia}'.toUpperCase()+
+				'<BR><CENTER>${estabelecimento.logradouro}, ${estabelecimento.numero}'+
+				'<BR><CENTER>${estabelecimento.bairro} - ${estabelecimento.cidade} - ${estabelecimento.uf}'+
+				'<BR><CENTER>${estabelecimento.telefone}'+
+				'<BR><CENTER>CNPJ:${estabelecimento.cnpj}'+
+				'<BR><LINE>'+
+				'<BR><CENTER>Recibo Não Fiscal'+
+				'<BR><LEFT>     QTD  ITEM         UNIT R$    TOTAL R$ '+
+				<c:forEach var="pedido" items="${pedidos}" varStatus="loop">
+				'<BR><LEFT>${pedido.qtd}  ;;${fn:substring(pedido.produto.nome, 0, 12)}'.padEnd(12, '_')+'  ;;${pedido.valorVenda}  ;;${pedido.valorVenda * pedido.qtd}'+
+				</c:forEach>
+				'<BR><BR><RIGHT><BOLD>TOTAL: R$ ${total}'
+				+printTroco
+				<c:choose>
+					<c:when test="${conta.delivery > 0}">
+						+'<BR><BR><LINE>Delivery:'+
+						'<BR>Nome: ${conta.nome_mesa}'+
+						'<BR>Telefone: ${conta.telefone}'+
+						'<BR>${conta.endereco.logradouro}, ${conta.endereco.numero}'
+					
+						<c:choose>	
+							<c:when test="${conta.endereco.complemento.length()>0}">
+								+'<BR>${conta.endereco.complemento}'
+							</c:when>
+						</c:choose>
+									
+						+'<BR>${conta.endereco.bairro} - ${conta.endereco.cidade} - ${conta.endereco.uf}'
+						
+						<c:choose>
+							<c:when test="${conta.endereco.cep.length()>0}">
+								+'<BR>${conta.endereco.cep}'
+							</c:when>
+						</c:choose>
 	
-		
+						<c:choose>
+							<c:when test="${conta.endereco.referencia.length()>0}">
+							+'<BR>${conta.endereco.referencia}'
+							</c:when>
+						</c:choose>
+				</c:when>
+			</c:choose>
+			+'<BR><CENTER>DG Sistemas (81)99939-3017 <CUT>'		
+			;				
+		    var textEncoded = encodeURI(text);	    
+		    window.location.href="intent://"+textEncoded+"#Intent;scheme=quickprinter;package=pe.diegoveloper.printerserverapp;end;";	   
+			</c:when>
+		</c:choose>		
+			
+			 
+		}		
 	
 	
 	
@@ -322,8 +374,9 @@ function limparmodal(){$("#valorInput").val('');$("#labeltroco").empty();}
 							$.post( "/lancardinheiro/"+valorInput.toFixed(2)+0.01);
 							setTimeout(function(){location.reload();}, 300);
 						}						
-						 if( valorInput > total){
+						 if( valorInput > total){							 
 									var troco = parseFloat(valorInput.toFixed(2)) - parseFloat(total.toFixed(2));
+									printTroco = '<BR><RIGHT><BOLD>PAGO: R$ '+valorInput.toFixed(2)+'<BR><RIGHT><BOLD>TROCO: R$ '+troco;
 									$("#labelinsiravalor").empty();
 									$("#labelinsiravalor").append('Valor Pago: R$ '+valorInput);									
 									$("#labeltroco").empty();
@@ -347,7 +400,8 @@ function limparmodal(){$("#valorInput").val('');$("#labeltroco").empty();}
 		
 	function refresh(){location.reload();}
 
-	function cartao(total){
+	function cartao(){
+		var total = parseFloat('${total}'.replace(",", "."));
 		if($("#valorInput").val() == ''){
 			$("#labeltroco").empty();
 			$("#labeltroco").append("Valor não informado!");		
@@ -371,15 +425,15 @@ function limparmodal(){$("#valorInput").val('');$("#labeltroco").empty();}
 	function fecharconta(total){					
 		if(total > 0){
 			$("#labeltroco").empty();
-			$("#labeltroco").append("O total precisa ser R$ 0 para a conta ser encerrada!");
+			$("#labeltroco").append("O total precisa ser R$ 0.00 para a conta ser encerrada!");
 			} else {
-				$.post( "/fecharcontapaga");
+				$.post( "/fecharcontapaga/${conta.id}");
 				$("#labeltroco").empty(); 
 				$("#labeltroco").append("Conta encerrada!");
 				$("#alert").show();
 				$("#alert").empty();
 				$("#alert").append("Conta Encerrada!");
-				setTimeout(function(){window.location.href = "/mainpage";}, 500);
+				setTimeout(function(){imprimirinvoice();window.location.href = "/mainpage";}, 500);
 				}
 		}
 	</script>

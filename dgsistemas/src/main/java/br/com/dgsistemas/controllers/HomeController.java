@@ -386,9 +386,10 @@ public class HomeController {
 
 	}
 
-	@RequestMapping(value = "/fecharcontapaga")
-	public void fecharconta(@ModelAttribute("contaid") Long contaid) {
-		if (contaRepo.findTotal(contaid) == 0.00) {
+	@PostMapping(value = "/fecharcontapaga/{contaid}")
+	public void fecharconta(@PathVariable("contaid") Long contaid) {
+		System.out.println(contaRepo.findTotal(contaid).doubleValue());
+		if (contaRepo.findTotal(contaid).doubleValue() == 0.00) {
 			contaRepo.fecharconta(contaid);
 		}
 

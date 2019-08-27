@@ -17,19 +17,19 @@ public interface PedidoRepo extends CrudRepository<Pedido, Long> {
 			  nativeQuery = true)
 	public List<Pedido> listarPedidosPorConta(@Param("id") Long id);
 	
-	@Query(value = "SELECT COALESCE(SUM(p.valor_venda),0.00) AS  totalDinheiro  FROM pedido p WHERE p.produto_id = 1 AND DATE(p.data) = :date", 
+	@Query(value = "SELECT round(CAST(SUM(p.valor_venda) AS NUMERIC), 2) AS  totalDinheiro  FROM pedido p WHERE p.produto_id = 1 AND DATE(p.data) = :date", 
 			  nativeQuery = true)
 	public Double valorTotalVendasEmDinheiroPorData(@Param("date") Date date);
 	
-	@Query(value = "SELECT COALESCE(SUM(p.valor_venda),0.00) AS  totalCartao  FROM pedido p WHERE p.produto_id = 2 AND DATE(p.data) = :date", 
+	@Query(value = "SELECT round(CAST(SUM(p.valor_venda) AS NUMERIC), 2) AS  totalCartao  FROM pedido p WHERE p.produto_id = 2 AND DATE(p.data) = :date", 
 			  nativeQuery = true)
 	public Double valorTotalVendasEmCartaoPorData(@Param("date") Date date);
 	
-	@Query(value = "SELECT COALESCE(SUM(p.valor_venda),0.00) AS  totalDinheiro  FROM pedido p WHERE p.produto_id = 1 AND DATE(p.data) = :date AND p.funcionario_id = :id", 
+	@Query(value = "SELECT round(CAST(SUM(p.valor_venda) AS NUMERIC), 2) AS  totalDinheiro  FROM pedido p WHERE p.produto_id = 1 AND DATE(p.data) = :date AND p.funcionario_id = :id", 
 			  nativeQuery = true)
 	public Double valorTotalVendasEmDinheiroPorDataAndFuncionario(@Param("date") Date date, @Param("id") int idFuncionario);
 	
-	@Query(value = "SELECT COALESCE(SUM(p.valor_venda),0.00) AS  totalCartao  FROM pedido p WHERE p.produto_id = 2 AND DATE(p.data) = :date AND p.funcionario_id = :id", 
+	@Query(value = "SELECT round(CAST(SUM(p.valor_venda) AS NUMERIC), 2) AS  totalCartao  FROM pedido p WHERE p.produto_id = 2 AND DATE(p.data) = :date AND p.funcionario_id = :id", 
 			  nativeQuery = true)
 	public Double valorTotalVendasEmCartaoPorDataAndFuncionario(@Param("date") Date date, @Param("id") int idFuncionario);
 	
